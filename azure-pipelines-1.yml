@@ -17,7 +17,7 @@ variables:
       value: "feature/$(Build.SourceBranchName)"
       
   - name: Pull_Param
-    value: ${{ lower(variables['$(BRANCH_NAME)/latest]')}}
+    value: ${{ lower(variables["($(BRANCH_NAME)/latest)]")}}
     
 
 steps:
