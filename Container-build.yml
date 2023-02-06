@@ -1,0 +1,8 @@
+steps:
+  - task: Bash@3
+    continueOnError: true
+    timeoutInMinutes: 35790
+    inputs:
+      targetType : inline
+      script: |
+        echo "Push archive variable is artifactory.boschdevcloud.com/zugspitze-series-docker-local/petalinux-v2021.2:$(Push_Param)"
