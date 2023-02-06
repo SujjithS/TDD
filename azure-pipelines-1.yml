@@ -17,9 +17,11 @@ variables:
       value: "feature/$(Build.SourceBranchName)"
       
   - name: Pull_Param
-    value: $(BRANCH_NAME)/latest
+    value: ${{ lower(variables['(BRANCH_NAME)/latest]')}}
+    
+
 steps:
-- bash: echo $(Pull_Param,,)
+- bash: echo $(Pull_Param)
 - task: ArchiveFiles@2
   inputs:
     rootFolderOrFile: '$(Build.BinariesDirectory)'
