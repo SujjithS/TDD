@@ -16,8 +16,7 @@ variables:
     ${{ else }}:
       value: "feature/$(Build.SourceBranchName)"
       
-  - name: Pull_Param
-    value: 
+
     
   - name: PullLower
     value: ${{ lower("$(BRANCH_NAME)/latest") }}
