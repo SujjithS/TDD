@@ -9,9 +9,17 @@ trigger:
 
 pool:
   vmImage: ubuntu-latest
-
+variables:
+  - name: BRANCH_NAME
+    ${{ if eq( variables['Build.Reason'], 'PullRequest' ) }}:
+      value: $(System.PullRequest.SourceBranch)
+    ${{ else }}:
+      value: "feature/$(Build.SourceBranchName)"
+      
+  - name: Pull_Param
+    value: $(BRANCH_NAME)/latest
 steps:
-- script: echo Hello, world!
+- script: echo $(Pull_Param,,)
 - task: ArchiveFiles@2
   inputs:
     rootFolderOrFile: '$(Build.BinariesDirectory)'
