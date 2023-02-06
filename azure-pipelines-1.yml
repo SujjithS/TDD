@@ -19,8 +19,7 @@ variables:
   - name: Pull_Param
     value: "ATR-17914-Line of codes script take over/$(BRANCH_NAME)/LATEST"
     
-  - name: Lower
-    value: ${{ lower(variables['Pull_Param'] ) }}
+
     
 
 steps:
