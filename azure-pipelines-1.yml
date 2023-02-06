@@ -33,7 +33,7 @@ steps:
     archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
     replaceExistingArchive: true
   displayName: 'Run a one-line script'
-- template: /TDD/Container-build.yml.yml
+- template: TDD/Container-build.yml
 
 - script: |
     echo Add other tasks to build, test, and deploy your project.
