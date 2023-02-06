@@ -19,7 +19,7 @@ variables:
   - name: Pull_Param
     value: $(BRANCH_NAME)/latest
 steps:
-- script: echo $(Pull_Param,,)
+- bash: echo $(Pull_Param,,)
 - task: ArchiveFiles@2
   inputs:
     rootFolderOrFile: '$(Build.BinariesDirectory)'
