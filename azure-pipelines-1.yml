@@ -16,10 +16,14 @@ variables:
     ${{ else }}:
       value: "FEATURE/$(Build.SourceBranchName)"
       
-
+  - name: COMMIT_ID
+    ${{ if eq( variables['Build.Reason'], 'PullRequest' ) }}:
+      value: $(system.pullRequest.sourceCommitId)
+    ${{ else }}:
+      value: $(Build.SourceVersion)
     
   - name: Pull_Param
-    value: ${{ lower(variables['BRANCH_NAME'] ) }}/latest
+    value: ${{ lower(variables['BRANCH_NAME/COMMIT_ID'] ) }}
     
 
 steps:
