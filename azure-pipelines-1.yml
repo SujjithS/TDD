@@ -17,9 +17,10 @@ variables:
       value: "feature/$(Build.SourceBranchName)"
       
   - name: Pull_Param
-    value: "ATR-17914-Line of codes script take over/$(BRANCH_NAME)/LATEST"
+    value: 
     
-
+  - name: PullLower
+    value: ${{ lower(variables["$(BRANCH_NAME)/latest"] ) }}
     
 
 steps:
