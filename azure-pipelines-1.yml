@@ -19,7 +19,7 @@ variables:
 
     
   - name: Pull_Param
-    value: ${{ lower(variables['Pull_Param'] ) }}/latest
+    value: ${{ lower(variables['BRANCH_NAME'] ) }}/latest
     
 
 steps:
