@@ -12,9 +12,9 @@ pool:
 variables:
   - name: BRANCH_NAME
     ${{ if eq( variables['Build.Reason'], 'PullRequest' ) }}:
-      value: $(System.PullRequest.SourceBranch)
+      value: "MAIN/$(System.PullRequest.SourceBranch)"
     ${{ else }}:
-      value: "feature/$(Build.SourceBranchName)"
+      value: "FEATURE/$(Build.SourceBranchName)"
       
 
     
