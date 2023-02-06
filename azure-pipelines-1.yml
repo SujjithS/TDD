@@ -23,7 +23,6 @@ variables:
     
 
 steps:
-- bash: echo $(Lower)
 - task: ArchiveFiles@2
   inputs:
     rootFolderOrFile: '$(Build.BinariesDirectory)'
