@@ -27,7 +27,7 @@ variables:
     
 
 steps:
-- template: cLoc.bat
+- template: /SujjithS/TDD/cLoc.bat
 # - task: ArchiveFiles@2
 #   inputs:
 #     rootFolderOrFile: '$(Build.BinariesDirectory)'
