@@ -1,0 +1,49 @@
+- task: BatchScript@1
+  inputs:
+    filename: '$(Pipeline.Workspace)/s/tools/devops/scripts/LinesofCode/cLoc.bat'
+    artifactoryService: 'sc-ado-artifactory'
+    specSource: 'taskConfiguration'
+    fileSpec: |
+      {
+        "files": [
+          {
+            "pattern": "$(Pipeline.Workspace)/s/generatedFiles/SWQualityReports/CountLinesofCode_report/*",
+            "target": "zugspitze-series-generic-local/$(BRANCH_NAME)/$(COMMIT_ID)/LOC/"
+          }
+        ]
+      }
+    failNoOp: true
+  displayName: Upload LOC Report to Artifactory
+  env:
+    archive: true
+    zipName: Linesofcode
+# Archive files v2
+## Compress files into .7z, .tar.gz, or .zip.
+#- task: ArchiveFiles@2
+#  inputs:
+#    rootFolderOrFile: '$(Build.BinariesDirectory)' # string. Required. Root folder or file to archive. Default: $(Build.BinariesDirectory).
+#    includeRootFolder: true # boolean. Required. Prepend root folder name to archive paths. Default: true.
+#  # Archive
+#    archiveType: 'zip' # 'zip' | '7z' | 'tar' | 'wim'. Required. Archive type. Default: zip.
+#    #sevenZipCompression: 'normal' # 'ultra' | 'maximum' | 'normal' | 'fast' | 'fastest' | 'none'. Optional. Use when archiveType = 7z. 7z compression. Default: normal.
+#    #tarCompression: 'gz' # 'gz' | 'bz2' | 'xz' | 'none'. Optional. Use when archiveType = tar. Tar compression. Default: gz.
+#    archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip' # string. Required. Archive file to create. Default: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip.
+#    replaceExistingArchive: true # boolean. Required. Replace existing archive. Default: true.
+#    #verbose: false # boolean. Force verbose output. Default: false.
+#    #quiet: false # boolean. Force quiet output. Default: false.
+
+
+#    - name: LOC Check
+#      executionOrder: ^TPL:execOrder;
+#      steps:
+#      - cmd: cLoc.bat
+#        fromPath: tools/devops/scripts/LinesofCode/cLoc.bat
+#        name: LOC_Radar
+#      archive:
+#      - backend: share
+#        fromPath: ./generatedFiles/SWQualityReports/CountLinesofCode_report
+#        includes: "*.*"
+#        afterFail: false
+#        zip: true
+#        zipName: Linesofcode
+
