@@ -28,7 +28,7 @@ variables:
     
 
 jobs:
-- job: A1
+- job: LowerCase
   steps:
    - script: 
       echo "${{ lower(variables['Pull_Param']) }}"
