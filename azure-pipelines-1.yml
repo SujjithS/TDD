@@ -26,19 +26,8 @@ variables:
     value: "${{ lower(variables['BRANCH_NAME'] ) }}/latest"
     
 
-steps:    
-# - template: /SujjithS/TDD/cLoc.bat
-# - task: ArchiveFiles@2
-#   inputs:
-#     rootFolderOrFile: '$(Build.BinariesDirectory)'
-#     includeRootFolder: true
-#     archiveType: 'zip'
-#     archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
-#     replaceExistingArchive: true
-#   displayName: 'Run a one-line script'
-# - template: Container-build.yml
+jobs:
+- job: A1
+  steps:
+    - template: /Container-build.yml
 
-- script: |
-    echo $(Pipeline.Workspace)
-    echo See https://aka.ms/yaml
-#   displayName: 'Run a multi-line script'
