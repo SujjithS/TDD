@@ -26,18 +26,7 @@ variables:
     value: "${{ lower(variables['BRANCH_NAME'] ) }}/latest"
     
 
-steps:
-- task: ArchiveFiles@2
-  inputs:
-    rootFolderOrFile: '$(Build.BinariesDirectory)'
-    includeRootFolder: true
-    archiveType: 'zip'
-    archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
-    replaceExistingArchive: true
-  displayName: 'Run a one-line script'
-- template: Container-build.yml
-
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
+jobs:
+- job: A1
+  steps:
+    - template: /Container-build.yml
