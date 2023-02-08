@@ -23,7 +23,7 @@ variables:
       value: $(Build.SourceVersion)
     
   - name: Pull_Param
-    value: $(BRANCH_NAME)
+    value: lower('FOO')
 
     
 
@@ -31,6 +31,6 @@ jobs:
 - job: LowerCase
   steps:
    - script: 
-      echo lower('FOO')
+      echo $(Pull_Param)
   displayName: 'Print lowercase string'
 
