@@ -30,6 +30,6 @@ jobs:
 - job: A1
   steps:
   - bash: 
-      echo $(Pull_Param)
+      echo "Call from Azure-Pipelines-1.yml is $(Pull_Param)"
   - template: /Container-build.yml
 
