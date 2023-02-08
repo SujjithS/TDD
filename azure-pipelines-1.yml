@@ -24,15 +24,13 @@ variables:
     
   - name: Pull_Param
     value: $(BRANCH_NAME)
-    
-  - name: Lower
-    value: $(lower('THIS IS JUST A TEST'))
+
     
 
 jobs:
 - job: A1
   steps:
    - script: 
-      echo "$(lower('${{ variables.Pull_Param }}'))"
+      echo "${{ lower(variables['Pull_Param']) }}"
   displayName: 'Print lowercase string'
 
