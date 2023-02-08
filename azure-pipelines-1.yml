@@ -14,7 +14,7 @@ variables:
     ${{ if eq( variables['Build.Reason'], 'PullRequest' ) }}:
       value: "$(System.PullRequest.SourceBranch)"
     ${{ else }}:
-      value: "HELLO/$(Build.SourceBranchName)"
+      value: "feature/$(Build.SourceBranchName)"
       
   - name: COMMIT_ID
     ${{ if eq( variables['Build.Reason'], 'PullRequest' ) }}:
