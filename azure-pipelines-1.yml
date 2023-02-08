@@ -23,7 +23,7 @@ variables:
       value: $(Build.SourceVersion)
     
   - name: Pull_Param
-    value: "${{ lower(variables['BRANCH_NAME'] ) }}/latest"
+    value: ${{ lower(variables['BRANCH_NAME/COMMIT_ID'] ) }}
     
 
 jobs:
