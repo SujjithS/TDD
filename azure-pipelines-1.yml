@@ -32,6 +32,7 @@ variables:
 jobs:
 - job: A1
   steps:
-  - script: echo Call from Azure-Pipelines-1.yml is $(Pull_Param) and Lower variable is $(Lower)
-  - template: /Container-build.yml
+   - script: 
+      echo "$(lower('${{ variables.Pull_Param }}'))"
+  displayName: 'Print lowercase string'
 
