@@ -31,6 +31,6 @@ jobs:
 - job: LowerCase
   steps:
    - script: 
-      echo $(Pull_Param)
+      echo '$(Pull_Param)'
   displayName: 'Print lowercase string'
 
