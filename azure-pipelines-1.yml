@@ -26,7 +26,7 @@ variables:
     value: ${{ lower(variables['BRANCH_NAME'] ) }}
     
   - name: Lower
-    value: ${{ lower("THIS IS JUST A TEST")}}
+    value: $(lower("THIS IS JUST A TEST"))
     
 
 jobs:
