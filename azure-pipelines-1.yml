@@ -23,7 +23,7 @@ variables:
       value: $(Build.SourceVersion)
     
   - name: Pull_Param
-    value: "$(BRANCH_NAME)/latest"
+    value: ${{ lower(variables['BRANCH_NAME/COMMIT_ID'] ) }}
     
   - name: Lower
     value: "${{ lower(variables['Pull_Param'] ) }}"
@@ -33,6 +33,6 @@ jobs:
 - job: A1
   steps:
   - bash: 
-      echo "Call from Azure-Pipelines-1.yml is $(Lower)"
+      echo "Call from Azure-Pipelines-1.yml is $(Pull_Param)"
   - template: /Container-build.yml
 
