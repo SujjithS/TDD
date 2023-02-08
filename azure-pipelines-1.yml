@@ -23,7 +23,7 @@ variables:
       value: $(Build.SourceVersion)
     
   - name: Pull_Param
-    value: lower('FOO')
+    value: lower("FOO")
 
     
 
