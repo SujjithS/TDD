@@ -26,13 +26,13 @@ variables:
     value: ${{ lower(variables['BRANCH_NAME'] ) }}
     
   - name: Lower
-    value: "${{ lower(variables['Pull_Param'] ) }}"
+    value: lower("THIS IS JUST A TEST")
     
 
 jobs:
 - job: A1
   steps:
   - bash: 
-      echo "Call from Azure-Pipelines-1.yml is $(Pull_Param)"
+      echo "Call from Azure-Pipelines-1.yml is $(Pull_Param) and Lower variable is $(Lower)"
   - template: /Container-build.yml
 
