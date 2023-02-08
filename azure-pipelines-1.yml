@@ -29,5 +29,7 @@ variables:
 jobs:
 - job: A1
   steps:
-    - template: /Container-build.yml
+  - bash: 
+      echo $(Pull_Param)
+  - template: /Container-build.yml
 
