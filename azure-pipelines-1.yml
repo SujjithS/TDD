@@ -26,7 +26,23 @@ variables:
     value: ${{ lower(variables['BRANCH_NAME/COMMIT_ID'] ) }}
     
 
-jobs:
-- job: A1
-  steps:
-    - template: /Container-build.yml
+# jobs:
+# - job: A1
+steps:
+  - task: Bash@3
+    continueOnError: true
+    timeoutInMinutes: 35790
+    inputs:
+      targetType : inline
+      script: |
+        cd $(Build.SourcesDirectory)/tools/Cloc_Tool/Package
+        # docker build -t artifactory.boschdevcloud.com/zugspitze-series-docker-local/LineOfCode:latest --no-cache ./
+        docker run --rm -t -d --name LineOFCode_con \
+          -v $(Build.SourcesDirectory):/app  \
+          artifactory.boschdevcloud.com/zugspitze-series-docker-local/LineOfCode bash
+        docker exec -t LineOFCode_con bash -c "\
+          cd tools/devops/scripts/LinesofCode/
+          chmod a+x cLoc.sh && ./cLoc.sh
+      failOnStderr: true
+    displayName: Build Lines of Code container
+
