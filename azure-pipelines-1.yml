@@ -34,9 +34,11 @@ variables:
 jobs:
 - job: LowerCase
   steps:
-    - task: CmdLine@2
+    - task: Bash@3
       inputs:
-        script: 'echo $(Pull_Param)'
+        targetType: 'inline'
+        script: |
+          echo ${$(Pull_Param),}
 
   displayName: 'Print lowercase string'
 
