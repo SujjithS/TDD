@@ -47,7 +47,8 @@ jobs:
 - job: LowerCase
   variables:
     # Define a new variable that holds the lowercased value of BRANCH_NAME
-    LOWERCASE_BRANCH_NAME: $[ lower(variables.BRANCH_NAME) ]
+    - name:  LOWER_BRANCH_NAME
+      value: ${{ lower(variables.BRANCH_NAME) }}
   steps:
     - task: Bash@3
       inputs:
