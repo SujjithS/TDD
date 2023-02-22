@@ -26,7 +26,7 @@ jobs:
   - task: PowerShell@2
     inputs:
       targetType: 'inline'
-      script: 'Write-Host "${{ format(''mst-{0}-infra'', lower(variables.$(Pull_Param))) }}"'
+      script: 'Write-Host "${{ format(''mst-{0}-infra'', lower(variables.Pull_Param)) }}"'
 
   displayName: 'Print lowercase string'
 
