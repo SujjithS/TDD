@@ -20,12 +20,12 @@ pool:
 
 # steps:
 #   - script: echo $A # outputs hello
-variables:
-  - name: BRANCH_NAME
-    ${{ if eq( variables['Build.Reason'], 'PullRequest' ) }}:
-      value: "$(System.PullRequest.SourceBranch)"
-    ${{ else }}:
-      value: "feature/$(Build.SourceBranchName)"
+# variables:
+#   - name: BRANCH_NAME
+#     ${{ if eq( variables['Build.Reason'], 'PullRequest' ) }}:
+#       value: "$(System.PullRequest.SourceBranch)"
+#     ${{ else }}:
+#       value: "feature/$(Build.SourceBranchName)"
     
 #   - name: Pull_Param
 #     value: $[ lower(variables.BRANCH_NAME) ]
@@ -39,9 +39,12 @@ variables:
 #         targetType: 'inline'
 #         script: |
 #           echo {$(Pull_Param),}
-# variables:
-#   - name: BRANCH_NAME
-#     value: ${{ if eq(variables['Build.Reason'], 'PullRequest') }}$(System.PullRequest.SourceBranch){{ else }}feature/$(Build.SourceBranchName){{ endif }}
+variables:
+  - name: BRANCH_NAME
+    ${{ if eq( variables['Build.Reason'], 'PullRequest' ) }}:
+      value: "$(System.PullRequest.SourceBranch)"
+    ${{ else }}:
+      value: "feature/$(Build.SourceBranchName)"
 
 jobs:
 - job: LowerCase
@@ -54,7 +57,11 @@ jobs:
       inputs:
         targetType: 'inline'
         script: |
-          echo $(LOWER_BRANCH_NAME)
+          echo "BRANCH_NAME = $(BRANCH_NAME)"
+          echo "LOWER_BRANCH_NAME (before) = $(LOWER_BRANCH_NAME)"
+          LOWER_BRANCH_NAME=$(echo $(LOWER_BRANCH_NAME) | tr '[:upper:]' '[:lower:]')
+          echo "LOWER_BRANCH_NAME (after) = $(LOWER_BRANCH_NAME)"
+
 
 
   displayName: 'Print lowercase string'
