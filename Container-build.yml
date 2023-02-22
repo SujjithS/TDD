@@ -5,4 +5,4 @@ steps:
     inputs:
       targetType : inline
       script: |
-        echo "Push archive variable is artifactory.boschdevcloud.com/zugspitze-series-docker-local/petalinux-v2021.2:$(Pull_Param)"
+        echo "Push archive variable is artifactory.boschdevcloud.com/zugspitze-series-docker-local/petalinux-v2021.2/$(Pull_Param) | tr '[:upper:]' '[:lower:]'"
