@@ -7,7 +7,10 @@ steps:
       script: |
         LC_Push_Param=$(echo "$(Push_Param)" | tr '[:upper:]' '[:lower:]')
         #echo $(Push_Param) | tr '[:upper:]' '[:lower:]'
-        echo "Push archive variable is artifactory.boschdevcloud.com/zugspitze-series-docker-local/petalinux-v2021.2/${LC_Push_Param}"
+        echo " LC_Push_Param Push archive variable is artifactory.boschdevcloud.com/zugspitze-series-docker-local/petalinux-v2021.2/${LC_Push_Param}"
+        echo "$(Push_Param)" | tr '[:upper:]' '[:lower:]'
+        Branch_Path = $(echo "$(Push_Param)" | tr '[:upper:]' '[:lower:]')
+        echo "Branch_Path Push archive variable is artifactory.boschdevcloud.com/zugspitze-series-docker-local/petalinux-v2021.2:${Branch_Path}"
 
 
 
