@@ -17,16 +17,18 @@ variables:
       value: "feature/$(Build.SourceBranchName)"
     
   - name: Pull_Param
-    value: "$(BRANCH_NAME)"
+    value: $lower(variables["BRANCH_NAME"])]
     
 
 jobs:
 - job: LowerCase
   steps:
-  - task: PowerShell@2
+  - task: Bash@3
     inputs:
       targetType: 'inline'
-      script: 'Write-Host "${{ format(''mst-{0}-infra'', lower(variables.Pull_Param)) }}"'
-
+      script: |
+        # Write your commands here
+        
+        echo $(Pull_Param)
   displayName: 'Print lowercase string'
 
