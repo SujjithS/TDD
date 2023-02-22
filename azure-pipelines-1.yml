@@ -17,18 +17,15 @@ variables:
       value: "feature/$(Build.SourceBranchName)"
     
   - name: Pull_Param
-    value: "$lower(variables[BRANCH_NAME])]"
+    value: $[lower(variables.BRANCH_NAME)]
     
 
 jobs:
 - job: LowerCase
   steps:
-  - task: Bash@3
-    inputs:
-      targetType: 'inline'
-      script: |
-        # Write your commands here
-        
-        echo $(Pull_Param)
+    - task: CmdLine@2
+      inputs:
+        script: 'echo $(Pull_Param)'
+
   displayName: 'Print lowercase string'
 
