@@ -9,23 +9,34 @@ trigger:
 
 pool:
   vmImage: ubuntu-latest
+
+parameters:
+- name: someString
+  type: string
+  default: "HELLO"    
+
 variables:
-  - name: BRANCH_NAME
-    ${{ if eq( variables['Build.Reason'], 'PullRequest' ) }}:
-      value: "$(System.PullRequest.SourceBranch)"
-    ${{ else }}:
-      value: "feature/$(Build.SourceBranchName)"
+   A: ${{ lower(parameters.someString) }}
+
+steps:
+  - script: echo $A # outputs hello
+# variables:
+#   - name: BRANCH_NAME
+#     ${{ if eq( variables['Build.Reason'], 'PullRequest' ) }}:
+#       value: "$(System.PullRequest.SourceBranch)"
+#     ${{ else }}:
+#       value: "feature/$(Build.SourceBranchName)"
     
-  - name: Pull_Param
-    value: $[lower(variables['SUJJITH'])]
+#   - name: Pull_Param
+#     value: $[lower(variables['$(System.PullRequest.SourceBranch)'])]
     
 
-jobs:
-- job: LowerCase
-  steps:
-    - task: CmdLine@2
-      inputs:
-        script: 'echo $(Pull_Param)'
+# jobs:
+# - job: LowerCase
+#   steps:
+#     - task: CmdLine@2
+#       inputs:
+#         script: 'echo $(Pull_Param)'
 
-  displayName: 'Print lowercase string'
+#   displayName: 'Print lowercase string'
 
