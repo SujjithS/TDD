@@ -20,25 +20,41 @@ pool:
 
 # steps:
 #   - script: echo $A # outputs hello
+# variables:
+#   - name: BRANCH_NAME
+#     ${{ if eq( variables['Build.Reason'], 'PullRequest' ) }}:
+#       value: "$(System.PullRequest.SourceBranch)"
+#     ${{ else }}:
+#       value: "feature/$(Build.SourceBranchName)"
+    
+#   - name: Pull_Param
+#     value: $[ lower(variables.BRANCH_NAME) ]
+    
+
+# jobs:
+# - job: LowerCase
+#   steps:
+#     - task: Bash@3
+#       inputs:
+#         targetType: 'inline'
+#         script: |
+#           echo {$(Pull_Param),}
 variables:
   - name: BRANCH_NAME
-    ${{ if eq( variables['Build.Reason'], 'PullRequest' ) }}:
-      value: "$(System.PullRequest.SourceBranch)"
-    ${{ else }}:
-      value: "feature/$(Build.SourceBranchName)"
-    
-  - name: Pull_Param
-    value: $[ lower(variables.BRANCH_NAME) ]
-    
+    value: ${{ if eq(variables['Build.Reason'], 'PullRequest') }}$(System.PullRequest.SourceBranch){{ else }}feature/$(Build.SourceBranchName){{ endif }}
 
 jobs:
 - job: LowerCase
+  variables:
+    # Define a new variable that holds the lowercased value of BRANCH_NAME
+    LOWERCASE_BRANCH_NAME: $[ lower(variables.BRANCH_NAME) ]
   steps:
     - task: Bash@3
       inputs:
         targetType: 'inline'
         script: |
-          echo {$(Pull_Param),}
+          echo "${{ variables.LOWERCASE_BRANCH_NAME }}"
+
 
   displayName: 'Print lowercase string'
 
