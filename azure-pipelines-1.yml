@@ -20,12 +20,12 @@ pool:
 
 # steps:
 #   - script: echo $A # outputs hello
-# variables:
-#   - name: BRANCH_NAME
-#     ${{ if eq( variables['Build.Reason'], 'PullRequest' ) }}:
-#       value: "$(System.PullRequest.SourceBranch)"
-#     ${{ else }}:
-#       value: "feature/$(Build.SourceBranchName)"
+variables:
+  - name: BRANCH_NAME
+    ${{ if eq( variables['Build.Reason'], 'PullRequest' ) }}:
+      value: "$(System.PullRequest.SourceBranch)"
+    ${{ else }}:
+      value: "feature/$(Build.SourceBranchName)"
     
 #   - name: Pull_Param
 #     value: $[ lower(variables.BRANCH_NAME) ]
@@ -39,9 +39,9 @@ pool:
 #         targetType: 'inline'
 #         script: |
 #           echo {$(Pull_Param),}
-variables:
-  - name: BRANCH_NAME
-    value: ${{ if eq(variables['Build.Reason'], 'PullRequest') }}$(System.PullRequest.SourceBranch){{ else }}feature/$(Build.SourceBranchName){{ endif }}
+# variables:
+#   - name: BRANCH_NAME
+#     value: ${{ if eq(variables['Build.Reason'], 'PullRequest') }}$(System.PullRequest.SourceBranch){{ else }}feature/$(Build.SourceBranchName){{ endif }}
 
 jobs:
 - job: LowerCase
