@@ -54,7 +54,7 @@ jobs:
       inputs:
         targetType: 'inline'
         script: |
-          echo "${{ variables.LOWERCASE_BRANCH_NAME }}"
+          echo $(LOWER_BRANCH_NAME)
 
 
   displayName: 'Print lowercase string'
