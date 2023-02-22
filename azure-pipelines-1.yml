@@ -38,7 +38,7 @@ jobs:
       inputs:
         targetType: 'inline'
         script: |
-          echo $(Pull_Param)'
+          echo $(Pull_Param)
 
 
 
