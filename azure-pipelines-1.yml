@@ -10,9 +10,13 @@ trigger:
 pool:
   vmImage: ubuntu-latest
 
+# parameters:
+# - name: someString
+#   type: string
+#   default: "HELLO"    
 
-
-
+# variables:
+#    A: ${{ lower(parameters.someString) }}
 
 # steps:
 #   - script: echo $A # outputs hello
@@ -24,14 +28,9 @@ variables:
       value: "feature/$(Build.SourceBranchName)"
     
   - name: Pull_Param
-    value: $(BRANCH_NAME)
+    value: $[ lower(variables.BRANCH_NAME) ]
+    
 
-parameters:
-- name: someString
-  type: string
-  default: $(Pull_Param)        
-variables:
-   A: ${{ lower(parameters.someString) }}
 jobs:
 - job: LowerCase
   steps:
