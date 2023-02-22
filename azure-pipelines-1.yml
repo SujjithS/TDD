@@ -57,10 +57,7 @@ jobs:
       inputs:
         targetType: 'inline'
         script: |
-          echo "BRANCH_NAME = $(BRANCH_NAME)"
-          echo "LOWER_BRANCH_NAME (before) = $(LOWER_BRANCH_NAME)"
-          LOWER_BRANCH_NAME=$(echo $(LOWER_BRANCH_NAME) | tr '[:upper:]' '[:lower:]')
-          echo "LOWER_BRANCH_NAME (after) = $(LOWER_BRANCH_NAME)"
+          echo $(LOWER_BRANCH_NAME) | tr '[:upper:]' '[:lower:]'
 
 
 
