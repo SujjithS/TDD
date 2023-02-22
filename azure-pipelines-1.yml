@@ -39,7 +39,10 @@ variables:
       value: "$(BRANCH_NAME)/$(COMMIT_ID)"
     
   - name: Pull_Param
-    value: $(BRANCH_NAME)
+    value: $(BRANCH_NAME)/latest
+  
+  - name: PreviousStageExecuted
+    value: true
     
 
 jobs:
@@ -49,8 +52,15 @@ jobs:
       inputs:
         targetType: 'inline'
         script: |
-          echo $(Pull_Param) | tr '[:upper:]' '[:lower:]'
-    - template: /Container-build.yml
+          # echo $(Pull_Param) | tr '[:upper:]' '[:lower:]'
+          if [ "$(PreviousStageExecuted)" == "true" ]; then
+            echo "##vso[task.setvariable variable=Pull_Param]$(BRANCH_NAME)/$(COMMIT_ID)"
+            echo "if $(Pull_Param)"
+          else
+            echo "##vso[task.setvariable variable=Pull_Param]$(Pull_Param)"
+            echo "else variable $(Pull_Param)"
+          fi
+    # - template: /Container-build.yml
 
 
 
