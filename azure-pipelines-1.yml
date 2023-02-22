@@ -26,6 +26,11 @@ variables:
       value: "$(System.PullRequest.SourceBranch)"
     ${{ else }}:
       value: "feature/$(Build.SourceBranchName)"
+  - name: COMMIT_ID
+    ${{ if eq( variables['Build.Reason'], 'PullRequest' ) }}:
+      value: $(system.pullRequest.sourceCommitId)
+    ${{ else }}:
+      value: $(Build.SourceVersion)
   
   - name: Push_Param
     ${{ if eq(variables['BRANCH_NAME'], 'master') }}:
