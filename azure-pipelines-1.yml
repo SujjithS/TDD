@@ -47,6 +47,9 @@ jobs:
           echo "This should print Branch/latest"
         fi
       displayName: Setting condition
+    - template: /Container-build.yml
+      parameters:
+        Pull_Param: $(Pull_Param
     # - task: Bash@3
     #   inputs:
     #     targetType: 'inline'
@@ -62,9 +65,7 @@ jobs:
     #         echo "else $(Pull_Param)"
     #         echo "This should print Branch/latest"
     #       fi
-    - template: /Container-build.yml
-      parameters:
-        Pull_Param: $(Pull_Param)
+)
 
 
 
