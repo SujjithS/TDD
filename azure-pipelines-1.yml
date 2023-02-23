@@ -38,8 +38,8 @@ variables:
   #   ${{ else }}:
   #     value: "$(BRANCH_NAME)/$(COMMIT_ID)"
     
-  - name: Pull_Param
-    value: $(BRANCH_NAME)/latest
+  # - name: Pull_Param
+  #   value: $(BRANCH_NAME)/latest
   
   - name: PreviousStageExecuted
     value: True
