@@ -1,3 +1,6 @@
+parameters:
+  - name: Pull_Param
+    type: string
 steps:
   - task: Bash@3
     continueOnError: true
