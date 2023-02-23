@@ -59,8 +59,10 @@ jobs:
             Pull_Param="$(BRANCH_NAME)/$(COMMIT_ID)"
             echo "##vso[task.setvariable variable=Pull_Param]$Pull_Param"
             echo "if true $(Pull_Param)"
+            echo "This should print Branch/commitid"
           fi
           echo "else $(Pull_Param)"
+          echo "This should print Branch/latest"
     # - template: /Container-build.yml
 
 
