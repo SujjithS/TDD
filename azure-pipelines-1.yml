@@ -51,7 +51,9 @@ jobs:
             echo "else $(Pull_Param)"
             echo "This should print Branch/latest"
           fi
-    # - template: /Container-build.yml
+    - template: /Container-build.yml
+      parameters:
+        Pull_Param: ${{ format('{0}', variables['Pull_Param']) }}
 
 
 
