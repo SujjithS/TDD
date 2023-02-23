@@ -33,27 +33,38 @@ variables:
     value: True
     
 
+
 jobs:
 - job: LowerCase
   steps:
-    - task: Bash@3
-      inputs:
-        targetType: 'inline'
-        script: |
-          echo "BRANCH_NAME: $(BRANCH_NAME)"
-          echo "COMMIT_ID: $(COMMIT_ID)"
-          # echo $(Pull_Param) | tr '[:upper:]' '[:lower:]'
-          if [ "$(PreviousStageExecuted)" == "True" ]; then
-            Pull_Param=$(echo $(BRANCH_NAME)/$(COMMIT_ID))
-            echo "if true $Pull_Param"
-            echo "This should print Branch/commitid"
-          else
-            echo "else $(Pull_Param)"
-            echo "This should print Branch/latest"
-          fi
+    - bash: 
+       if [ "$(PreviousStageExecuted)" == "True" ]; then
+          Pull_Param=$(echo $(BRANCH_NAME)/$(COMMIT_ID))
+          echo "if true $(Pull_Param)"
+          echo "This should print Branch/commitid"
+       else
+          echo "else $(Pull_Param)"
+          echo "This should print Branch/latest"
+        fi
+      displayName: Setting condition
+    # - task: Bash@3
+    #   inputs:
+    #     targetType: 'inline'
+    #     script: |
+    #       echo "BRANCH_NAME: $(BRANCH_NAME)"
+    #       echo "COMMIT_ID: $(COMMIT_ID)"
+    #       # echo $(Pull_Param) | tr '[:upper:]' '[:lower:]'
+    #       if [ "$(PreviousStageExecuted)" == "True" ]; then
+    #         Pull_Param=$(echo $(BRANCH_NAME)/$(COMMIT_ID))
+    #         echo "if true $(Pull_Param)"
+    #         echo "This should print Branch/commitid"
+    #       else
+    #         echo "else $(Pull_Param)"
+    #         echo "This should print Branch/latest"
+    #       fi
     - template: /Container-build.yml
       parameters:
-        Pull_Param: ${{ format('{0}', variables['Pull_Param']) }}
+        Pull_Param: $(Pull_Param)
 
 
 
