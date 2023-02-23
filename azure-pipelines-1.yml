@@ -22,15 +22,9 @@ pool:
 #   - script: echo $A # outputs hello
 variables:
   - name: BRANCH_NAME
-    ${{ if eq( variables['Build.Reason'], 'PullRequest' ) }}:
-      value: "$(System.PullRequest.SourceBranch)"
-    ${{ else }}:
-      value: "feature/$(Build.SourceBranchName)"
+    value: "BRANCH_NAME"
   - name: COMMIT_ID
-    ${{ if eq( variables['Build.Reason'], 'PullRequest' ) }}:
-      value: $(system.pullRequest.sourceCommitId)
-    ${{ else }}:
-      value: $(Build.SourceVersion)
+    value: "COMMIT_ID"
   
   # - name: Push_Param
   #   ${{ if eq(variables['BRANCH_NAME'], 'master') }}:
@@ -39,7 +33,7 @@ variables:
   #     value: "$(BRANCH_NAME)/$(COMMIT_ID)"
     
   - name: Pull_Param
-    value: $(BRANCH_NAME)/latest
+    value: BranchName/latest
   
   - name: PreviousStageExecuted
     value: True
