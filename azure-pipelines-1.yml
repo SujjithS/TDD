@@ -37,7 +37,7 @@ variables:
 jobs:
 - job: LowerCase
   steps:
-    - bash: 
+    - bash: |
        if [ "$(PreviousStageExecuted)" == "True" ]; then
           Pull_Param=$(echo $(BRANCH_NAME)/$(COMMIT_ID))
           echo "if true $(Pull_Param)"
