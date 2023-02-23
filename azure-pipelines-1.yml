@@ -5,7 +5,7 @@
 # https://aka.ms/yaml
 
 trigger:
-- main
+- none
 
 pool:
   vmImage: ubuntu-latest
@@ -38,8 +38,8 @@ variables:
   #   ${{ else }}:
   #     value: "$(BRANCH_NAME)/$(COMMIT_ID)"
     
-  # - name: Pull_Param
-  #   value: $(BRANCH_NAME)/latest
+  - name: Pull_Param
+    value: $(BRANCH_NAME)/latest
   
   - name: PreviousStageExecuted
     value: True
@@ -56,8 +56,8 @@ jobs:
           echo "COMMIT_ID: $(COMMIT_ID)"
           # echo $(Pull_Param) | tr '[:upper:]' '[:lower:]'
           if [ "$(PreviousStageExecuted)" == "True" ]; then
-            Pull_Param="$(BRANCH_NAME)/$(COMMIT_ID)"
-            echo "##vso[task.setvariable variable=Pull_Param]$Pull_Param"
+            # Pull_Param="$(BRANCH_NAME)/$(COMMIT_ID)"
+            echo "##vso[task.setvariable variable=$Pull_Param]$(BRANCH_NAME)/$(COMMIT_ID)"
             echo "if true $(Pull_Param)"
             echo "This should print Branch/commitid"
           else
