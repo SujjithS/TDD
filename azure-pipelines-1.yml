@@ -42,7 +42,7 @@ variables:
     value: $(BRANCH_NAME)/latest
   
   - name: PreviousStageExecuted
-    value: false
+    value: True
     
 
 jobs:
