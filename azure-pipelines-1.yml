@@ -57,7 +57,7 @@ jobs:
           # echo $(Pull_Param) | tr '[:upper:]' '[:lower:]'
           if [ "$(PreviousStageExecuted)" == "True" ]; then
             # Pull_Param="$(BRANCH_NAME)/$(COMMIT_ID)"
-            echo "##vso[task.setvariable variable=Pull_Param]$(BRANCH_NAME)/$(COMMIT_ID)"
+            echo "##vso[task.setvariable variable=Pull_Param]($(BRANCH_NAME)/$(COMMIT_ID))"
             echo "if true $(Pull_Param)"
             echo "This should print Branch/commitid"
           else
