@@ -18,7 +18,7 @@ stages:
   jobs:
   - job: Build_Branch_Version_Number
     variables:
-       brpatch: $[counter(variables['Build.BuildId'], 0)]
+       brpatch: $[counter(variables['build.sourcebranchname'], 0)]
     steps:
       - bash: |
           echo "The value of major is: $(major)"
