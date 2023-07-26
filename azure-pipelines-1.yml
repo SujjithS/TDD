@@ -28,7 +28,7 @@ jobs:
       inputs:
         targetType : inline
         script: |
-          echo "${{ parameters.Release_major }}.${{ parameters.Release_minor }}.$(patch_version)"
+          echo "${{ parameters.major_version }}.${{ parameters.minor_version }}.$(patch_version)"
         failOnStderr: true
       displayName: Test
 
