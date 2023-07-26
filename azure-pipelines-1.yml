@@ -12,7 +12,7 @@ pool:
 variables:
    major: 2
    minor: 0
-   brpatch: $[counter(variables['minor'], )]
+   brpatch: $[counter(variables['minor'], 1)]
 stages:
 - stage:
   displayName: Build_Branch_Version_Number
