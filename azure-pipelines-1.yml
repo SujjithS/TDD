@@ -4,8 +4,8 @@
 # Add steps that build, run tests, deploy, and more:
 # https://aka.ms/yaml
 
-trigger:
-- none
+trigger: none
+pr: none
 
 pool:
   vmImage: ubuntu-latest
@@ -23,14 +23,26 @@ stages:
     - bash: |
         patchVersion=$((patchVersion + 1))
 
-        if [ $patchVersion -eq 10 ]; then
+        if [ -z "$patchVersion" ]; then
+          patchVersion=0
+        fi
+
+        if [ "$patchVersion" -eq 10 ]; then
           patchVersion=0
           minorVersion=$((minorVersion + 1))
         fi
 
-        if [ $minorVersion -eq 10 ]; then
+        if [ -z "$minorVersion" ]; then
+          minorVersion=0
+        fi
+
+        if [ "$minorVersion" -eq 10 ]; then
           minorVersion=0
           majorVersion=$((majorVersion + 1))
+        fi
+
+        if [ -z "$majorVersion" ]; then
+          majorVersion=0
         fi
 
         echo "##vso[task.setvariable variable=majorVersion;isOutput=true]$majorVersion"
@@ -48,10 +60,4 @@ stages:
       displayName: Show Current Version
 
     # Add your other jobs/steps here that require the updated version.
-
-
-
-
-
-
 
