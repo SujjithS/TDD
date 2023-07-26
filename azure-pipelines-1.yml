@@ -17,7 +17,6 @@ variables:
 jobs:
 - job: A1
   steps:
-    - script: echo "##vso[task.setvariable variable=patch_version]$[variables.patch_version + 1]" 
     - bash: |
         patch_version=$((patch_version + 1))
         echo "##vso[task.setvariable variable=patch_version]$patch_version"
@@ -31,5 +30,6 @@ jobs:
           echo "${{ variables.major_version }}.${{ variables.minor_version }}.$(patch_version)"
         failOnStderr: true
       displayName: Test
+
 
 
