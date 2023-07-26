@@ -12,14 +12,12 @@ pool:
 variables:
    major: 0
    minor: 0
-   brpatch: 0
+   brpatch: $[counter(variables['minor'], 0)]
 stages:
 - stage:
   displayName: Build_Branch_Version_Number
   jobs:
   - job: Build_Branch_Version_Number
-    variables:
-       brpatch: $[counter(variables['minor'], 0)]
     steps:
       - bash: |
           echo "The value of major is: $(major)"
