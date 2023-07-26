@@ -10,9 +10,10 @@ pr: none
 pool:
   vmImage: 'ubuntu-latest'
 variables:
-   major: 0
-   min: 0
-   brpatch: $[counter(variables['min'], 0)]
+  major: 2
+  minor: 1
+  semantic: $(major).$(minor)
+  brpatch: $[counter(2.1, 203)]
 stages:
 - stage:
   displayName: Build_Branch_Version_Number
@@ -21,9 +22,10 @@ stages:
     steps:
       - bash: |
           echo "The value of major is: $(major)"
-          echo "The value of minor is: $(min)"
+          echo "The value of minor is: $(minor)"
+          echo "The value of semantic is: $(semantic)"
           echo "The value of brpatch is: $(brpatch)"
-          echo "$(major).$(min).$(brpatch)"
+          echo "$(major).$(minor).$(semantic)$(brpatch)"
         # condition: ne(variables['Build.Reason'], 'PullRequest')
         name: SetBranchBuildName
 # - stage: Reset_Brpatch
