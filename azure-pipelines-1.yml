@@ -18,12 +18,13 @@ stages:
   jobs:
   - job: Build_Branch_Version_Number
     variables:
-       brpatch: $[counter(variables['build.sourcebranchname'], 0)]
+       brpatch: $[counter(variables['Build.BuildId'], 0)]
     steps:
       - bash: |
           echo "The value of major is: $(major)"
           echo "The value of minor is: $(minor)"
           echo "The value of brpatch is: $(brpatch)"
+          echo "$(major).$(minor).$(brpatch)"
           echo "##vso[build.updatebuildnumber]$(major).$(minor).$(brpatch)"
         # condition: ne(variables['Build.Reason'], 'PullRequest')
         name: SetBranchBuildName
