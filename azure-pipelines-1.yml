@@ -25,7 +25,7 @@ stages:
           echo "The value of minor is: $(minor)"
           echo "The value of semantic is: $(semantic)"
           echo "The value of brpatch is: $(brpatch)"
-          echo "$(major).$(minor).$(semantic).$(brpatch)"
+          echo "$(semantic).$(brpatch)"
         # condition: ne(variables['Build.Reason'], 'PullRequest')
         name: SetBranchBuildName
 # - stage: Reset_Brpatch
