@@ -8,56 +8,32 @@ trigger: none
 pr: none
 
 pool:
-  vmImage: ubuntu-latest
-
+  vmImage: 'ubuntu-latest'
 variables:
-  majorVersion: 0
-  minorVersion: 0
-  patchVersion: $[counter(variables['minorVersion'], 1)]
-
+   major: 2
+   minor: 0
 stages:
-- stage: IncrementVersions
+- stage:
+  displayName: Build_Branch_Version_Number
+  condition: ne(variables['Build.SourceBranch'], 'refs/heads/master')
   jobs:
-  - job: UpdateVersion
+  - job: Build_Branch_Version_Number
+    variables:
+       brpatch: $[counter(variables['build.sourcebranchname'], 0)]
     steps:
-    - bash: |
-        patchVersion=$((patchVersion + 1))
-
-        if [ -z "$patchVersion" ]; then
-          patchVersion=0
-        fi
-
-        if [ "$patchVersion" -eq 10 ]; then
-          patchVersion=0
-          minorVersion=$((minorVersion + 1))
-        fi
-
-        if [ -z "$minorVersion" ]; then
-          minorVersion=0
-        fi
-
-        if [ "$minorVersion" -eq 10 ]; then
-          minorVersion=0
-          majorVersion=$((majorVersion + 1))
-        fi
-
-        if [ -z "$majorVersion" ]; then
-          majorVersion=0
-        fi
-
-        echo "##vso[task.setvariable variable=majorVersion;isOutput=true]$majorVersion"
-        echo "##vso[task.setvariable variable=minorVersion;isOutput=true]$minorVersion"
-        echo "##vso[task.setvariable variable=patchVersion;isOutput=true]$patchVersion"
-      displayName: Update Version
-
-- stage: UseUpdatedVersion
-  dependsOn: IncrementVersions
-  jobs:
-  - job: A1
+      - bash: |
+           echo "##vso[build.updatebuildnumber]$(major).$(minor)-$(Build.SourceBranchName).$(brpatch)"
+        condition: ne(variables['Build.Reason'], 'PullRequest')
+        name: SetBranchBuildName
+- stage: Build_Steps
+  displayName: Build_Steps
+  jobs:  
+  - job: Build_Steps
+    displayName: Build_Steps
     steps:
-    - bash: |
-        echo "Current Version: $majorVersion.$minorVersion.$patchVersion"
-      displayName: Show Current Version
-
-    # Add your other jobs/steps here that require the updated version.
-
+    - script: echo Hello, world!
+      name: 'Run_a_one_line_script'
+    - script: |
+          echo Add other tasks to build, test, and deploy your project.
+          echo See https://aka.ms/yaml
+      name: 'Run_a_multi_line_cript'
