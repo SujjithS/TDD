@@ -29,7 +29,6 @@ stages:
         # condition: ne(variables['Build.Reason'], 'PullRequest')
         name: SetBranchBuildName
 - stage: Reset_Brpatch
-  condition: manual
   jobs:
   - job: Reset_Brpatch
     steps:
