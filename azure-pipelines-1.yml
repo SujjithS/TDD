@@ -14,10 +14,6 @@ variables:
   minor_version: 0
   patch_version: $[counter(variables['minor_version'], 1)]
 
-
-
-    
-
 jobs:
 - job: A1
   steps:
@@ -28,7 +24,8 @@ jobs:
       inputs:
         targetType : inline
         script: |
-          echo "${{ parameters.major_version }}.${{ parameters.minor_version }}.$(patch_version)"
+          echo "${{ variables.major_version }}.${{ variables.minor_version }}.$(patch_version)"
         failOnStderr: true
       displayName: Test
+
 
