@@ -11,39 +11,45 @@ pool:
   vmImage: ubuntu-latest
 
 variables:
-  major_version: 0
-  minor_version: 0
+  majorVersion: 0
+  minorVersion: 0
+  patchVersion: $[counter(variables['minorVersion'], 1)]
 
 stages:
-- stage: IncrementPatchVersion
+- stage: IncrementVersions
+  jobs:
+  - job: UpdateVersion
+    steps:
+    - bash: |
+        patchVersion=$((patchVersion + 1))
+
+        if [ $patchVersion -eq 10 ]; then
+          patchVersion=0
+          minorVersion=$((minorVersion + 1))
+        fi
+
+        if [ $minorVersion -eq 10 ]; then
+          minorVersion=0
+          majorVersion=$((majorVersion + 1))
+        fi
+
+        echo "##vso[task.setvariable variable=majorVersion;isOutput=true]$majorVersion"
+        echo "##vso[task.setvariable variable=minorVersion;isOutput=true]$minorVersion"
+        echo "##vso[task.setvariable variable=patchVersion;isOutput=true]$patchVersion"
+      displayName: Update Version
+
+- stage: UseUpdatedVersion
+  dependsOn: IncrementVersions
   jobs:
   - job: A1
     steps:
     - bash: |
-        # Get the current patch version from the variable
-        patch_version=$(echo ${{ variables.patch_version }})
+        echo "Current Version: $majorVersion.$minorVersion.$patchVersion"
+      displayName: Show Current Version
 
-        # Increment the patch version
-        patch_version=$((patch_version + 1))
+    # Add your other jobs/steps here that require the updated version.
 
-        # Set the new patch version as a pipeline variable for future runs
-        echo "##vso[task.setvariable variable=patch_version]$patch_version"
-      displayName: Increment Patch Version
 
-    - bash: |
-        # Use the updated patch version from the variable
-        echo "New Patch Version: ${{ variables.patch_version }}"
-      displayName: Show Updated Patch Version
-
-- stage: UseUpdatedVersion
-  dependsOn: IncrementPatchVersion
-  jobs:
-  - job: B1
-    steps:
-    - bash: |
-        # Use the updated patch version from the variable
-        echo "Current Patch Version: ${{ variables.patch_version }}"
-      displayName: Use Updated Patch Version
 
 
 
