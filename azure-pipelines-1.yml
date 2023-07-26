@@ -10,39 +10,25 @@ trigger:
 pool:
   vmImage: ubuntu-latest
 variables:
-  - name: BRANCH_NAME
-    ${{ if eq( variables['Build.Reason'], 'PullRequest' ) }}:
-      value: "$(System.PullRequest.SourceBranch)"
-    ${{ else }}:
-      value: "feature/$(Build.SourceBranchName)"
-      
-  - name: COMMIT_ID
-    ${{ if eq( variables['Build.Reason'], 'PullRequest' ) }}:
-      value: $(system.pullRequest.sourceCommitId)
-    ${{ else }}:
-      value: $(Build.SourceVersion)
-    
-  - name: Pull_Param
-    value: ${{ lower(variables['BRANCH_NAME/COMMIT_ID'] ) }}
+  major_version: 0
+  minor_version: 0
+  patch_version: $[counter(variables['minor_version'], 1)]
+
+
+
     
 
-# jobs:
-# - job: A1
-steps:
-  - task: Bash@3
-    continueOnError: true
-    timeoutInMinutes: 35790
-    inputs:
-      targetType : inline
-      script: |
-        cd $(Build.SourcesDirectory)/tools/Cloc_Tool/Package
-        # docker build -t artifactory.boschdevcloud.com/zugspitze-series-docker-local/LineOfCode:latest --no-cache ./
-        docker run --rm -t -d --name LineOFCode_con \
-          -v $(Build.SourcesDirectory):/app  \
-          artifactory.boschdevcloud.com/zugspitze-series-docker-local/LineOfCode bash
-        docker exec -t LineOFCode_con bash -c "\
-          cd tools/devops/scripts/LinesofCode/
-          chmod a+x cLoc.sh && ./cLoc.sh
-      failOnStderr: true
-    displayName: Build Lines of Code container
+jobs:
+- job: A1
+  steps:
+    - script: echo "##vso[task.setvariable variable=patch_version]$[variables.patch_version + 1]" 
+    - task: Bash@3
+      continueOnError: true
+      timeoutInMinutes: 35790
+      inputs:
+        targetType : inline
+        script: |
+          echo "${{ parameters.Release_major }}.${{ parameters.Release_minor }}.$(patch_version)"
+        failOnStderr: true
+      displayName: Test
 
