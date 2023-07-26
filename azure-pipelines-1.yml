@@ -13,7 +13,7 @@ variables:
   major: 2
   minor: 1
   semantic: $(major).$(minor)
-  brpatch: $[counter(2.1, 100)]
+  brpatch: $[counter(2.1, 0)]
 stages:
 - stage:
   displayName: Build_Branch_Version_Number
