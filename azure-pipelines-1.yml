@@ -14,30 +14,37 @@ variables:
   major_version: 0
   minor_version: 0
 
-jobs:
-- job: A1
-  steps:
-    - script: |
-        # Get the current build number, e.g., 0.0.10
-        build_number=$(Build.BuildNumber)
-        
-        # Extract the patch version from the build number
-        patch_version=$(echo $build_number | awk -F. '{print $3}')
-        
+stages:
+- stage: IncrementPatchVersion
+  jobs:
+  - job: A1
+    steps:
+    - bash: |
+        # Get the current patch version from the variable
+        patch_version=$(echo ${{ variables.patch_version }})
+
         # Increment the patch version
         patch_version=$((patch_version + 1))
-        
-        # Set the new build number with the updated patch version
-        new_build_number="${major_version}.${minor_version}.${patch_version}"
-        
-        # Update the build number for the current pipeline run
-        echo "##vso[build.updatebuildnumber]$new_build_number"
+
+        # Set the new patch version as a pipeline variable for future runs
+        echo "##vso[task.setvariable variable=patch_version]$patch_version"
       displayName: Increment Patch Version
 
     - bash: |
-        # Use the updated build number from the previous step
-        echo "New Build Number: $(Build.BuildNumber)"
-      displayName: Show Updated Build Number
+        # Use the updated patch version from the variable
+        echo "New Patch Version: ${{ variables.patch_version }}"
+      displayName: Show Updated Patch Version
+
+- stage: UseUpdatedVersion
+  dependsOn: IncrementPatchVersion
+  jobs:
+  - job: B1
+    steps:
+    - bash: |
+        # Use the updated patch version from the variable
+        echo "Current Patch Version: ${{ variables.patch_version }}"
+      displayName: Use Updated Patch Version
+
 
 
 
