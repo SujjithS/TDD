@@ -21,7 +21,10 @@ stages:
        brpatch: $[counter(variables['build.sourcebranchname'], 0)]
     steps:
       - bash: |
-           echo "##vso[build.updatebuildnumber]$(major).$(minor).$(brpatch)"
+          echo "The value of major is: $(major)"
+          echo "The value of minor is: $(minor)"
+          echo "The value of brpatch is: $(brpatch)"
+          echo "##vso[build.updatebuildnumber]$(major).$(minor).$(brpatch)"
         # condition: ne(variables['Build.Reason'], 'PullRequest')
         name: SetBranchBuildName
 # - stage: Build_Steps
