@@ -9,27 +9,36 @@ trigger:
 
 pool:
   vmImage: ubuntu-latest
+
 variables:
   major_version: 0
   minor_version: 0
-  patch_version: $[counter(variables['minor_version'], 1)]
 
 jobs:
 - job: A1
   steps:
-    - bash: |
+    - script: |
+        # Get the current build number, e.g., 0.0.10
+        build_number=$(Build.BuildNumber)
+        
+        # Extract the patch version from the build number
+        patch_version=$(echo $build_number | awk -F. '{print $3}')
+        
+        # Increment the patch version
         patch_version=$((patch_version + 1))
-        echo "##vso[task.setvariable variable=patch_version]$patch_version"
+        
+        # Set the new build number with the updated patch version
+        new_build_number="${major_version}.${minor_version}.${patch_version}"
+        
+        # Update the build number for the current pipeline run
+        echo "##vso[build.updatebuildnumber]$new_build_number"
       displayName: Increment Patch Version
-    - task: Bash@3
-      continueOnError: true
-      timeoutInMinutes: 35790
-      inputs:
-        targetType : inline
-        script: |
-          echo "${{ variables.major_version }}.${{ variables.minor_version }}.$(patch_version)"
-        failOnStderr: true
-      displayName: Test
+
+    - bash: |
+        # Use the updated build number from the previous step
+        echo "New Build Number: $(Build.BuildNumber)"
+      displayName: Show Updated Build Number
+
 
 
 
