@@ -12,13 +12,14 @@ pool:
 variables:
    major: 2
    minor: 0
+   brpatch: $[counter(variables['minor'], 1)]
 stages:
 - stage:
   displayName: Build_Branch_Version_Number
   jobs:
   - job: Build_Branch_Version_Number
-    variables:
-       brpatch: $[counter(variables['minor'], 1)]
+    # variables:
+    #    brpatch: $[counter(variables['minor'], 1)]
     steps:
       - bash: |
           echo "The value of major is: $(major)"
@@ -27,14 +28,14 @@ stages:
           echo "$(major).$(minor).$(brpatch)"
         # condition: ne(variables['Build.Reason'], 'PullRequest')
         name: SetBranchBuildName
-- stage: Reset_Brpatch
-  jobs:
-  - job: Reset_Brpatch
-    steps:
-      - bash: |
-          echo "Resetting brpatch to 0"
-          echo "##vso[task.setvariable variable=brpatch]0"
-        name: ResetBrpatch
+# - stage: Reset_Brpatch
+#   jobs:
+#   - job: Reset_Brpatch
+#     steps:
+#       - bash: |
+#           echo "Resetting brpatch to 0"
+#           echo "##vso[task.setvariable variable=brpatch]0"
+#         name: ResetBrpatch
 # - stage: Build_Steps
 #   displayName: Build_Steps
 #   jobs:  
