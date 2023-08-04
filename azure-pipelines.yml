@@ -15,5 +15,5 @@ stages:
           - template: RunBatch.yml
           - template: Capture.yml
             parameters:
-              SomeParameter: $[dependencies.Test.RunBatchStep.outputs['RunBatchStep.sd_rootdev']]
+              SomeParameter: $[dependencies.Test.outputs['setVariable.sd_rootdev']]
         displayName: 'Run a multi-line script'
