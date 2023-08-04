@@ -4,3 +4,5 @@ steps:
       sd_rootdev=sujjith
       echo "##vso[task.setvariable variable=sd_rootdev;isOutput=true]$sd_rootdev"
     name: RunBatchStep
+    displayName: 'Run a multi-line script'
+    continueOnError: true # This is needed to ensure Capture.yml runs even if this step fails
