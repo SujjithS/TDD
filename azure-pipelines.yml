@@ -8,9 +8,9 @@ trigger:
 stages:
   - stage : Build
     jobs:
-    -  job: Test
-    pool: 
-      vmImage: ubuntu-latest
-    steps:
-      - template: RunBatch.yml
-    displayName: 'Run a multi-line script'
+      - job: Test
+        pool: 
+          vmImage: ubuntu-latest
+        steps:
+          - template: RunBatch.yml
+        displayName: 'Run a multi-line script'
