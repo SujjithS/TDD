@@ -4,5 +4,5 @@ steps:
       TestVariable=Azure
       echo "TestVariable:  $TestVariable"
       echo "##vso[task.setvariable variable=TestVariable;isOutput=true]$sd_rootdev"
-    # name: RunBatchStep
+    name: RunBatchStep
     displayName: 'Run a multi-line script'
