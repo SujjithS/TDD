@@ -1,6 +1,6 @@
 parameters:
 - name: SomeParameter
-  default: ''
+  type: string
 
 steps:
   - bash: |
