@@ -1,1 +1,3 @@
-echo "sd_rootdev: ${{ dependencies.RunBatchStep.outputs['RunBatchStep.sd_rootdev'] }}"
+steps:
+  - script: echo "sd_rootdev: ${{ dependencies.RunBatchStep.outputs['RunBatchStep.sd_rootdev'] }}"
+    displayName: Capture sd_rootdev
