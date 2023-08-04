@@ -2,5 +2,6 @@ steps:
   - bash: |
       echo "Bow bow."
       sd_rootdev=sujjith
+      echo "sd_rootdev: $sd_rootdev"
       echo "##vso[task.setvariable variable=sd_rootdev;isOutput=true]$sd_rootdev"
       
