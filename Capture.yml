@@ -1,3 +1,7 @@
+variables:
+  sd_rootdev_output: $[ dependencies.RunBatch.outputs['RunBatch.RunBatchStep.sd_rootdev'] ]
+
 steps:
-  - script: echo "sd_rootdev: $(RunBatch.RunBatchStep.sd_rootdev)"
-    displayName: Capture sd_rootdev
+  - bash: |
+      echo "Captured sd_rootdev: $(sd_rootdev_output)"
+    displayName: 'Capture sd_rootdev'
