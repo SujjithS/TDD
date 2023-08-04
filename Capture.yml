@@ -1,7 +1,8 @@
-variables:
-  sd_rootdev_output: $[ dependencies.RunBatch.outputs['RunBatch.RunBatchStep.sd_rootdev'] ]
+parameters:
+- name: SomeParameter
+  default: ''
 
 steps:
   - bash: |
-      echo "Captured sd_rootdev: $(sd_rootdev_output)"
+      echo "Captured sd_rootdev: ${{parameters.SomeParameter}}"
     displayName: 'Capture sd_rootdev'
