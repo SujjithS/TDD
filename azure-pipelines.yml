@@ -13,4 +13,5 @@ stages:
           vmImage: ubuntu-latest
         steps:
           - template: RunBatch.yml
+          - template: Capture.yml
         displayName: 'Run a multi-line script'
