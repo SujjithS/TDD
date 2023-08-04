@@ -4,5 +4,7 @@ parameters:
 
 steps:
   - bash: |
+      echo "$sd_rootdev"
+      echo "$(sd_rootdev)"
       echo "Captured sd_rootdev: ${{parameters.SomeParameter}}"
     displayName: 'Capture sd_rootdev'
