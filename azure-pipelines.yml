@@ -15,5 +15,5 @@ stages:
           - template: RunBatch.yml
           - template: Capture.yml
             parameters:
-              SomeParameter: $('RunBatchStep.TestVariable')
+              SomeParameter: $(RunBatchStep.TestVariable)
         displayName: 'Run a multi-line script'
