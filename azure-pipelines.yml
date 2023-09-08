@@ -12,6 +12,12 @@ stages:
         pool: 
           vmImage: ubuntu-latest
         steps:
+          - bash: |
+              set -e
+              false || true
+            name: Test
+            displayName: Test set -e
+
           - template: RunBatch.yml
           - template: Capture.yml
             parameters:
