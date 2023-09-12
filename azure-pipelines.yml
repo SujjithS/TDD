@@ -2,6 +2,13 @@
 # Start with a minimal pipeline that you can customize to build and deploy your code.
 # Add steps that build, run tests, deploy, and more:
 # https://aka.ms/yaml
+parameters:
+- name: test
+  displayName: test_sensor
+  values:
+    - start
+    - shutdown
+  default: shutdown
 
 trigger:
 - main
@@ -12,16 +19,22 @@ stages:
         pool: 
           vmImage: ubuntu-latest
         steps:
-          - bash: |
-              set -e
-              command1=0
-              command2=1
-              command1 || command2
-            name: Test
-            displayName: Test set -e
+          - task: PythonScript@0
+            inputs:
+              scriptSource: 'filePath'
+              scriptPath: 'test.py'
+              arguments: '${{ parameters.trigger_sensor}}'
+        #   - bash: |
+        #       set -e
+        #       command1=0
+        #       command2=1
+        #       command1 || command2
+        #     name: Test
+        #     displayName: Test set -e
 
-          - template: RunBatch.yml
-          - template: Capture.yml
-            parameters:
-              SomeParameter: $(RunBatchStep.TestVariable)
-        displayName: 'Run a multi-line script'
+        #   - template: RunBatch.yml
+        #   - template: Capture.yml
+        #     parameters:
+        #       SomeParameter: $(RunBatchStep.TestVariable)
+        # displayName: 'Run a multi-line script'
+          
