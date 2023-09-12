@@ -23,7 +23,7 @@ stages:
             inputs:
               scriptSource: 'filePath'
               scriptPath: 'test.py'
-              arguments: --${{ parameters.test}}
+              arguments: '${{ parameters.test}}'
         #   - bash: |
         #       set -e
         #       command1=0
