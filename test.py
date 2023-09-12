@@ -1,7 +1,7 @@
 import argparse
 parser = argparse.ArgumentParser()
-parser.add_argument("shutdown", action='store_true')
-parser.add_argument("start", action='store_true')
+parser.add_argument("shutdown", action="store_true")
+parser.add_argument("start", action="store_true")
 args = parser.parse_args()
 
 if args.shutdown and not args.start:
