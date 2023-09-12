@@ -1,6 +1,5 @@
 import argparse
 parser = argparse.ArgumentParser()
-parser.add_argument("shutdown", help="display a sensor stater",
-                    type=string)
+parser.add_argument("shutdown")
 args = parser.parse_args()
 print(args.shutdown)
