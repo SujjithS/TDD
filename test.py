@@ -1,6 +1,6 @@
 import argparse
 parser = argparse.ArgumentParser()
-parser.add_argument('--shutdown', '-s')
+parser.add_argument('--shutdown')
 args = parser.parse_args()
 
 
