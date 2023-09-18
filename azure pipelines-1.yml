@@ -1,0 +1,50 @@
+# Starter pipeline
+
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger: none
+pr: none
+
+pool:
+  vmImage: 'ubuntu-latest'
+variables:
+  major: 2
+  minor: 1
+  semantic: $(major).$(minor)
+  bpatch: $[counter(2.1, 0)]
+stages:
+- stage:
+  displayName: Build_Branch_Version_Number
+  jobs:
+  - job: Build_Branch_Version_Number
+    steps:
+      - bash: |
+          echo "The value of major is: $(major)"
+          echo "The value of minor is: $(minor)"
+          echo "The value of semantic is: $(semantic)"
+          echo "The value of brpatch is: $(bpatch)"
+          echo "$(semantic).$(bpatch)"
+        # condition: ne(variables['Build.Reason'], 'PullRequest')
+        name: SetBranchBuildName
+# - stage: Reset_Brpatch
+#   jobs:
+#   - job: Reset_Brpatch
+#     steps:
+#       - bash: |
+#           echo "Resetting brpatch to 0"
+#           echo "##vso[task.setvariable variable=brpatch]0"
+#         name: ResetBrpatch
+# - stage: Build_Steps
+#   displayName: Build_Steps
+#   jobs:  
+#   - job: Build_Steps
+#     displayName: Build_Steps
+#     steps:
+#     - script: echo Hello, world!
+#       name: 'Run_a_one_line_script'
+#     - script: |
+#           echo Add other tasks to build, test, and deploy your project.
+#           echo See https://aka.ms/yaml
+#       name: 'Run_a_multi_line_cript'
