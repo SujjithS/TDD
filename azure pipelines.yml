@@ -26,18 +26,4 @@ stages:
               arguments: '${{ parameters.test}}'
               pythonInterpreter: /usr/bin/python3.8
             displayName: Delete old files from artifactory
-          displayName: Test
-        #   - bash: |
-        #       set -e
-        #       command1=0
-        #       command2=1
-        #       command1 || command2
-        #     name: Test
-        #     displayName: Test set -e
-
-        #   - template: RunBatch.yml
-        #   - template: Capture.yml
-        #     parameters:
-        #       SomeParameter: $(RunBatchStep.TestVariable)
-        # displayName: 'Run a multi-line script'
-          
+          displayName: Test        
