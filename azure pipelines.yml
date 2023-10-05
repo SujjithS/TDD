@@ -26,7 +26,7 @@ stages:
             arguments: '${{ parameters.test}}'
             pythonInterpreter: 'python3.8'
           # displayName: Testing task level displayName
-        displayName: Testing job level displayName   
+        # displayName: Testing job level displayName   
       # - job: CleanUpNightlyBuilds
       #   pool: 
       #     vmImage: ubuntu-latest
