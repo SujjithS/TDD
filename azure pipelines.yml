@@ -26,4 +26,4 @@ stages:
               arguments: '${{ parameters.test}}'
               pythonInterpreter: /usr/bin/python3.8
             displayName: Test
-          displayName: Test     
+    displayName: Test     
