@@ -25,5 +25,5 @@ stages:
               scriptPath: 'test.py'
               arguments: '${{ parameters.test}}'
               pythonInterpreter: /usr/bin/python3.8
-            displayName: Test
-    displayName: Test     
+            displayName: Testing task level displayName
+          displayName: Testing job level displayName   
