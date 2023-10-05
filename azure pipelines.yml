@@ -24,6 +24,9 @@ stages:
               scriptSource: 'filePath'
               scriptPath: 'test.py'
               arguments: '${{ parameters.test}}'
+              pythonInterpreter: /usr/bin/python3.8
+            displayName: Delete old files from artifactory
+          displayName: Test
         #   - bash: |
         #       set -e
         #       command1=0
