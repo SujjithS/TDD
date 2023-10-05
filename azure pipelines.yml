@@ -25,7 +25,7 @@ stages:
               scriptPath: 'test.py'
               arguments: '${{ parameters.test}}'
               pythonInterpreter: /usr/bin/python3.8
-          displayName: Testing task level displayName
+          # displayName: Testing task level displayName
         displayName: Testing job level displayName   
       # - job: CleanUpNightlyBuilds
       #   pool: 
