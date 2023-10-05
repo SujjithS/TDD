@@ -38,6 +38,6 @@ stages:
             scriptSource: 'filePath'
             scriptPath: 'test.py'
             arguments: '${{ parameters.test}}'
-            pythonInterpreter: python3.8
+            pythonInterpreter: /usr/bin/python3.8
           displayName: Delete old files from artifactory
         displayName: Clean Up Nightly Builds
