@@ -15,15 +15,29 @@ trigger:
 stages:
   - stage : Build
     jobs:
-      - job: Test
+      # - job: Test
+      #   pool: 
+      #     vmImage: ubuntu-latest
+      #   steps:
+      #     - task: PythonScript@0
+      #       inputs:
+      #         scriptSource: 'filePath'
+      #         scriptPath: 'test.py'
+      #         arguments: '${{ parameters.test}}'
+      #         pythonInterpreter: /usr/bin/python3.8
+      #       displayName: Testing task level displayName
+      #   displayName: Testing job level displayName   
+      - job: CleanUpNightlyBuilds
         pool: 
           vmImage: ubuntu-latest
+        timeoutInMinutes: 0 
+        cancelTimeoutInMinutes: 35790
         steps:
-          - task: PythonScript@0
-            inputs:
-              scriptSource: 'filePath'
-              scriptPath: 'test.py'
-              arguments: '${{ parameters.test}}'
-              pythonInterpreter: /usr/bin/python3.8
-            displayName: Testing task level displayName
-          displayName: Testing job level displayName   
+        - task: PythonScript@0
+          inputs:
+            scriptSource: 'filePath'
+            scriptPath: 'test.py'
+            arguments: '${{ parameters.test}}'
+            pythonInterpreter: python3.8
+          displayName: Delete old files from artifactory
+        displayName: Clean Up Nightly Builds
