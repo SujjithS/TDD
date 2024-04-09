@@ -5,23 +5,54 @@ pool:
   vmImage: 'ubuntu-latest'
 
 steps:
-- checkout: self
+- script: |
+    echo "Creating a simple SARIF file..."
+    cat > simple_sarif.json <<EOF
+    {
+      "\$schema": "https://json.schemastore.org/sarif-2.1.0.json",
+      "version": "2.1.0",
+      "runs": [
+        {
+          "tool": {
+            "driver": {
+              "name": "ExampleTool",
+              "semanticVersion": "1.0.0"
+            }
+          },
+          "results": [
+            {
+              "level": "warning",
+              "message": {
+                "text": "Example warning message"
+              },
+              "locations": [
+                {
+                  "physicalLocation": {
+                    "artifactLocation": {
+                      "uri": "file:///example/path/to/code.c"
+                    },
+                    "region": {
+                      "startLine": 42,
+                      "startColumn": 1,
+                      "endLine": 42,
+                      "endColumn": 18
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+    EOF
+    echo "SARIF file created:"
+    cat simple_sarif.json
+  displayName: 'Create and Display SARIF File'
 
-- task: NodeTool@0
+- task: PublishBuildArtifacts@1
   inputs:
-    versionSpec: '14.x'
-  displayName: 'Install Node.js'
-
-- script: |
-    npm install
-    npm install -g eslint
-  displayName: 'Install dependencies and ESLint'
-
-- script: |
-    eslint -c .eslintrc.json --ext .js,.jsx,.ts,.tsx ./src --format json -o eslint-report.json
-    npx sarif-converter eslint-report.json --output eslint-report.sarif
-  displayName: 'Run ESLint and generate SARIF report'
-
-- publish: $(System.DefaultWorkingDirectory)
-  artifact: SARIF_Report
-  displayName: 'Publish SARIF Report as Build Artifact'
+    PathtoPublish: 'simple_sarif.json'
+    ArtifactName: 'SARIF_Report'
+    publishLocation: 'Container'
+  displayName: 'Publish SARIF File'
