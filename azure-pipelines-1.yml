@@ -51,7 +51,7 @@ steps:
 
 - task: PublishBuildArtifacts@1
   inputs:
-    PathtoPublish: '$(Build.SourcesDirectory)/project.sarif'
+    PathtoPublish: '$(Build.SourcesDirectory)/jr.sarif'
     ArtifactName: 'CodeAnalysisLogs'
     publishLocation: 'Container'
   displayName: 'Publish SARIF Report'
