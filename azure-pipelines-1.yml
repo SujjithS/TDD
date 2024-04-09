@@ -7,7 +7,7 @@ pool:
 steps:
 - script: |
     echo "Creating a simple SARIF file..."
-    cat > simple_sarif.json <<EOF
+    cat > simple.sarif <<EOF
     {
       "\$schema": "https://json.schemastore.org/sarif-2.1.0.json",
       "version": "2.1.0",
@@ -47,12 +47,12 @@ steps:
     }
     EOF
     echo "SARIF file created:"
-    cat simple_sarif.json
+    cat simple.sarif
   displayName: 'Create and Display SARIF File'
 
 - task: PublishBuildArtifacts@1
   inputs:
-    PathtoPublish: 'simple_sarif.json'
+    PathtoPublish: 'simple.sarif'
     ArtifactName: 'SARIF_Report'
     publishLocation: 'Container'
   displayName: 'Publish SARIF File'
