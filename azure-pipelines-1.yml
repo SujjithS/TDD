@@ -3,7 +3,7 @@ trigger:
 
 variables:
   a_core_sw_variant: 'nightly'
-  a_core_version_major: $[ format('{0:yy}', pipeline.startTime) ]  # Last two digits of the year
+  a_core_version_major: $[ format('{0:dd}', pipeline.startTime) ]  # Last two digits of the year
   a_core_version_minor: $[ format('{0:MM}', pipeline.startTime) ]  # Month
   a_core_version_patch: $[ format('{0:yyyy}', pipeline.startTime) ]  # Full year
 
