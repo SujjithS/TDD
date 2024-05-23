@@ -2,18 +2,25 @@ trigger:
 - main
 
 variables:
-  current_date: $[ format('{0:yyyyMMdd}', pipeline.startTime) ]
+  a_core_sw_variant: 'nightly'
+  a_core_version_major: $[ format('{0:yy}', pipeline.startTime) ]  # Last two digits of the year
+  a_core_version_minor: $[ format('{0:MM}', pipeline.startTime) ]  # Month
+  a_core_version_patch: $[ format('{0:yyyy}', pipeline.startTime) ]  # Full year
 
 jobs:
-- job: BuildAndTest
+- job: Build
   displayName: 'Build and Test'
   pool:
     vmImage: 'ubuntu-latest'
 
   steps:
   - script: |
-      echo "Current date is $(current_date)"
-      mkdir build_$(current_date)
-      cd build_$(current_date)
-      # Your build and test commands here
-    displayName: 'Print Current Date and Create Build Directory'
+      echo "A-Core SW Variant: $(a_core_sw_variant)"
+      echo "A-Core Major Version: $(a_core_version_major)"
+      echo "A-Core Minor Version: $(a_core_version_minor)"
+      echo "A-Core Patch Version: $(a_core_version_patch)"
+    displayName: 'Print Version Information'
+  - script: |
+      # Your build commands here
+      echo "Building with version: $(a_core_version_major).$(a_core_version_minor).$(a_core_version_patch)"
+    displayName: 'Build Project'
