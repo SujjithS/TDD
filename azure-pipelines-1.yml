@@ -1,58 +1,19 @@
 trigger:
 - main
 
-pool:
-  vmImage: 'ubuntu-latest'
+variables:
+  current_date: $[ format('{0:yyyyMMdd}', pipeline.startTime) ]
 
-steps:
-- script: |
-    echo "Creating a SARIF report..."
-    mkdir CodeAnalysisLogs
-    cat > CodeAnalysisLogs/analysis.sarif <<EOF
-    {
-      "version": "2.1.0",
-      "\$schema": "https://docs.oasis-open.org/sarif/sarif/v2.1.0/cos02/schemas/sarif-schema-2.1.0.json",
-      "runs": [
-        {
-          "originalUriBaseIds": {
-            "PROJECT_ROOT": {"uri": "file:///workspaces/ad-radar-sensor/tools/code_analysis/helix_qac/helix/l4_business_logic_gcc_lx/"},
-            "SOURCE_ROOT": {"uri": "file:///workspaces/ad-radar-sensor/"}
-          },
-          "results": [
-            {
-              "ruleId": "qacpp-1074",
-              "ruleIndex": 0,
-              "message": {"id": "default"},
-              "locations": [
-                {
-                  "physicalLocation": {
-                    "artifactLocation": {"uri": "file:///source/file.c"},
-                    "region": {"startLine": 36, "startColumn": 1}
-                  }
-                }
-              ],
-              "relatedLocations": [
-                {
-                  "physicalLocation": {
-                    "artifactLocation": {"uri": "file:///home/AzDevOps/.conan/data/ros1cpp/0.1.1/aos/dev/package/404e49b75d1b2e505ecb66e55f9ed2fd051b31aa/include/ros/message.h"},
-                    "region": {"startLine": 38, "startColumn": 10}
-                  }
-                }
-              ]
-            }
-            # Add additional results in proper JSON format here
-          ]
-        }
-      ]
-    }
-    EOF
-    echo "SARIF report created in CodeAnalysisLogs directory."
-  displayName: 'Generate SARIF Report'
+jobs:
+- job: BuildAndTest
+  displayName: 'Build and Test'
+  pool:
+    vmImage: 'ubuntu-latest'
 
-- task: PublishBuildArtifacts@1
-  inputs:
-    PathtoPublish: '$(Build.SourcesDirectory)/jr.sarif'
-    ArtifactName: 'CodeAnalysisLogs'
-    publishLocation: 'Container'
-  displayName: 'Publish SARIF Report'
-
+  steps:
+  - script: |
+      echo "Current date is $(current_date)"
+      mkdir build_$(current_date)
+      cd build_$(current_date)
+      # Your build and test commands here
+    displayName: 'Print Current Date and Create Build Directory'
