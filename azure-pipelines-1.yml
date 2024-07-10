@@ -53,6 +53,7 @@ stages:
                 echo "It was requested to use a specific base image (not the released one...)"
               else
                 echo "Released base image will be used (if required one...)"
+              fi
             displayName: 'Set ROOTFS Variables'
 
       - job: BuildCustomRootFsPackg
@@ -64,7 +65,6 @@ stages:
               set -e
               echo "ROOTFS_PATTERN: $(ROOTFS_PATTERN)"
             displayName: 'Echo ROOTFS_PATTERN'
-
 
 
           # - task: ArtifactoryGenericDownload@3
