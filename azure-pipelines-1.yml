@@ -10,9 +10,6 @@ parameters:
 
 stages:
   - stage: A_Core_Build
-    variables:
-      - name: ROOTFS_PATTERN
-        value: ''
     jobs:
       - job: InitStep
         timeoutInMinutes: 0 
@@ -23,18 +20,16 @@ stages:
 
               if [[ "${{ parameters.base_image_target }}" == "tec0204" ]]; then
                 echo "##vso[task.setvariable variable=ROOTFS_FILENAME;isOutput=true]rootfs_tec0204_bullseye_final_arm64_latest.ext4"
-                echo "##vso[task.setvariable variable=ROOTFS_PATTERN]zugspitze-series-generic-local/releases/debian-base-image/latest/rootfs_tec0204_bullseye_final_arm64_latest.ext4.gz"
-                ROOTFS_FILENAME=rootfs_tec0204_bullseye_final_arm64_latest.ext4
-                ROOTFS_PATTERN=zugspitze-series-generic-local/releases/debian-base-image/latest/rootfs_tec0204_bullseye_final_arm64_latest.ext4.gz
+                echo "##vso[task.setvariable variable=ROOTFS_PATTERN;isOutput=true]zugspitze-series-generic-local/releases/debian-base-image/latest/rootfs_tec0204_bullseye_final_arm64_latest.ext4.gz"
 
-                echo "ROOTFS file: $ROOTFS_FILENAME"
-                echo "ROOTFS_PATTERN: $ROOTFS_PATTERN"
+                echo "ROOTFS file: $(ROOTFS_FILENAME)"
+                echo "ROOTFS_PATTERN: $(ROOTFS_PATTERN)"
 
                 echo "Baseimage to be used:"
                 echo " - BASE_IMAGE_SPECIFIC_RUN_ID: ${{ parameters.base_image_specific_run_id }}"
                 if [[ "${{ parameters.base_image_specific_run_id }}" != 0 ]]; then
                   echo "It was requested to use a specific base image (not the released one...)"
-                  echo "##vso[task.setvariable variable=BASE_IMAGE_SPECIFIC_RUN_ID]${{ parameters.base_image_specific_run_id }}"
+                  echo "##vso[task.setvariable variable=BASE_IMAGE_SPECIFIC_RUN_ID;isOutput=true]${{ parameters.base_image_specific_run_id }}"
                   echo "##vso[task.setvariable variable=ROOTFS_LOCATION;isOutput=true]$(Pipeline.Workspace)"
                   echo "##vso[task.setvariable variable=ARTIFACT_NAME;isOutput=true]BuildFinalRootFS-tec0204-sw-debian-build-final-rootfs-1-1"
                 else
@@ -42,19 +37,17 @@ stages:
                   echo "##vso[task.setvariable variable=ROOTFS_LOCATION;isOutput=true]$(Build.SourcesDirectory)/artifactorydownload/releases/debian-base-image/latest"
                 fi
               elif [[ "${{ parameters.base_image_target }}" == "te0950" ]]; then
-                echo "##vso[task.setvariable variable=ROOTFS_PATTERN]zugspitze-series-generic-local/releases/debian-base-image-te0950/latest/rootfs_te0950_bullseye_final_arm64_latest.ext4.gz"
+                echo "##vso[task.setvariable variable=ROOTFS_PATTERN;isOutput=true]zugspitze-series-generic-local/releases/debian-base-image-te0950/latest/rootfs_te0950_bullseye_final_arm64_latest.ext4.gz"
                 echo "##vso[task.setvariable variable=ROOTFS_FILENAME;isOutput=true]rootfs_te0950_bullseye_arm64_latest.ext4"
-                ROOTFS_FILENAME=rootfs_te0950_bullseye_arm64_latest.ext4
-                ROOTFS_PATTERN=zugspitze-series-generic-local/releases/debian-base-image-te0950/latest/rootfs_te0950_bullseye_final_arm64_latest.ext4.gz
 
-                echo "ROOTFS file: $ROOTFS_FILENAME"
-                echo "ROOTFS_PATTERN: $ROOTFS_PATTERN"
+                echo "ROOTFS file: $(ROOTFS_FILENAME)"
+                echo "ROOTFS_PATTERN: $(ROOTFS_PATTERN)"
 
                 echo "Baseimage to be used:"
                 echo " - BASE_IMAGE_SPECIFIC_RUN_ID: ${{ parameters.base_image_specific_run_id }}"                
                 if [[ "${{ parameters.base_image_specific_run_id }}" != 0 ]]; then
                   echo "It was requested to use a specific base image (not the released one...)"
-                  echo "##vso[task.setvariable variable=BASE_IMAGE_SPECIFIC_RUN_ID]${{ parameters.base_image_specific_run_id }}"
+                  echo "##vso[task.setvariable variable=BASE_IMAGE_SPECIFIC_RUN_ID;isOutput=true]${{ parameters.base_image_specific_run_id }}"
                   echo "##vso[task.setvariable variable=ROOTFS_LOCATION;isOutput=true]$(Pipeline.Workspace)"
                   echo "##vso[task.setvariable variable=ARTIFACT_NAME;isOutput=true]BuildFinalRootFS-te0950-sw-debian-build-final-rootfs-1-1"
                 else
@@ -72,7 +65,9 @@ stages:
         steps:
           - bash: |
               set -e
-              echo "$(ROOTFS_PATTERN)"
+              echo "$ROOTFS_PATTERN"
+            displayName: 'Echo ROOTFS_PATTERN'
+
 
           # - task: ArtifactoryGenericDownload@3
           #   inputs:
