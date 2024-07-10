@@ -38,11 +38,11 @@ stages:
                 fi
               fi
 
-              echo "##vso[task.setvariable variable=ROOTFS_FILENAME;isOutput=true]$ROOTFS_FILENAME"
-              echo "##vso[task.setvariable variable=ROOTFS_PATTERN;isOutput=true]$ROOTFS_PATTERN"
-              echo "##vso[task.setvariable variable=ROOTFS_LOCATION;isOutput=true]$ROOTFS_LOCATION"
-              echo "##vso[task.setvariable variable=BASE_IMAGE_SPECIFIC_RUN_ID;isOutput=true]${{ parameters.base_image_specific_run_id }}"
-              echo "##vso[task.setvariable variable=ARTIFACT_NAME;isOutput=true]$ARTIFACT_NAME"
+              echo "##vso[task.setvariable variable=ROOTFS_FILENAME]$ROOTFS_FILENAME"
+              echo "##vso[task.setvariable variable=ROOTFS_PATTERN]$ROOTFS_PATTERN"
+              echo "##vso[task.setvariable variable=ROOTFS_LOCATION]$ROOTFS_LOCATION"
+              echo "##vso[task.setvariable variable=BASE_IMAGE_SPECIFIC_RUN_ID]${{ parameters.base_image_specific_run_id }}"
+              echo "##vso[task.setvariable variable=ARTIFACT_NAME]$ARTIFACT_NAME"
 
               echo "ROOTFS file: $ROOTFS_FILENAME"
               echo "ROOTFS_PATTERN: $ROOTFS_PATTERN"
@@ -53,19 +53,16 @@ stages:
                 echo "It was requested to use a specific base image (not the released one...)"
               else
                 echo "Released base image will be used (if required one...)"
-              fi
             displayName: 'Set ROOTFS Variables'
 
       - job: BuildCustomRootFsPackg
+        dependsOn: InitStep
         timeoutInMinutes: 0 
         cancelTimeoutInMinutes: 35790 
-        dependsOn: InitStep
-        variables:
-          ROOTFS_PATTERN: $[ dependencies.InitStep.outputs['Set ROOTFS Variables.ROOTFS_PATTERN'] ]
         steps:
           - script: |
               set -e
-              echo "ROOTFS_PATTERN: $ROOTFS_PATTERN"
+              echo "ROOTFS_PATTERN: $(ROOTFS_PATTERN)"
             displayName: 'Echo ROOTFS_PATTERN'
 
 
