@@ -1,26 +1,125 @@
-trigger:
-- main
+parameters:
+- name: base_image_target
+  displayName: Base image type (target)
+  type: string
+  default: tec0204
+- name: base_image_specific_run_id
+  displayName: 'Base image specific run ID'
+  type: number
+  default: 0
 
-variables:
-  a_core_sw_variant: 'nightly'
-  a_core_version_major: $[ format('{0:dd}', pipeline.startTime) ]  # Last two digits of the year
-  a_core_version_minor: $[ format('{0:MM}', pipeline.startTime) ]  # Month
-  a_core_version_patch: $[ format('{0:yyyy}', pipeline.startTime) ]  # Full year
+stages:
+  - stage: A_Core_Build
+    variables:
+      - name: ROOTFS_PATTERN
+        value: ''
+    jobs:
+      - job: InitStep
+        timeoutInMinutes: 0 
+        cancelTimeoutInMinutes: 35790 
+        steps:
+          - bash: |
+              set -e
 
-jobs:
-- job: Build
-  displayName: 'Build and Test'
-  pool:
-    vmImage: 'ubuntu-latest'
+              if [[ "${{ parameters.base_image_target }}" == "tec0204" ]]; then
+                echo "##vso[task.setvariable variable=ROOTFS_FILENAME;isOutput=true]rootfs_tec0204_bullseye_final_arm64_latest.ext4"
+                echo "##vso[task.setvariable variable=ROOTFS_PATTERN]zugspitze-series-generic-local/releases/debian-base-image/latest/rootfs_tec0204_bullseye_final_arm64_latest.ext4.gz"
+                echo "ROOTFS file: $ROOTFS_FILENAME"
+                echo "ROOTFS_PATTERN: $ROOTFS_PATTERN"
 
-  steps:
-  - script: |
-      echo "A-Core SW Variant: $(a_core_sw_variant)"
-      echo "A-Core Major Version: $(a_core_version_major)"
-      echo "A-Core Minor Version: $(a_core_version_minor)"
-      echo "A-Core Patch Version: $(a_core_version_patch)"
-    displayName: 'Print Version Information'
-  - script: |
-      # Your build commands here
-      echo "Building with version: $(a_core_version_major).$(a_core_version_minor).$(a_core_version_patch)"
-    displayName: 'Build Project'
+                echo "Baseimage to be used:"
+                echo " - BASE_IMAGE_SPECIFIC_RUN_ID: ${{ parameters.base_image_specific_run_id }}"
+                if [[ "${{ parameters.base_image_specific_run_id }}" != 0 ]]; then
+                  echo "It was requested to use a specific base image (not the released one...)"
+                  echo "##vso[task.setvariable variable=BASE_IMAGE_SPECIFIC_RUN_ID]${{ parameters.base_image_specific_run_id }}"
+                  echo "##vso[task.setvariable variable=ROOTFS_LOCATION;isOutput=true]$(Pipeline.Workspace)"
+                  echo "##vso[task.setvariable variable=ARTIFACT_NAME;isOutput=true]BuildFinalRootFS-tec0204-sw-debian-build-final-rootfs-1-1"
+                else
+                  echo "Released base image will be used (releases/debian-base-image/latest)"
+                  echo "##vso[task.setvariable variable=ROOTFS_LOCATION;isOutput=true]$(Build.SourcesDirectory)/artifactorydownload/releases/debian-base-image/latest"
+                fi
+              fi
+
+              if [[ "${{ parameters.base_image_target }}" == "te0950" ]]; then
+                echo "##vso[task.setvariable variable=ROOTFS_PATTERN]zugspitze-series-generic-local/releases/debian-base-image-te0950/latest/rootfs_te0950_bullseye_final_arm64_latest.ext4.gz"
+                echo "##vso[task.setvariable variable=ROOTFS_FILENAME;isOutput=true]rootfs_te0950_bullseye_arm64_latest.ext4"
+                echo "ROOTFS file: $ROOTFS_FILENAME"
+                echo "ROOTFS_PATTERN: $ROOTFS_PATTERN"
+
+                echo "Baseimage to be used:"
+                echo " - BASE_IMAGE_SPECIFIC_RUN_ID: ${{ parameters.base_image_specific_run_id }}"                
+                if [[ "${{ parameters.base_image_specific_run_id }}" != 0 ]]; then
+                  echo "It was requested to use a specific base image (not the released one...)"
+                  echo "##vso[task.setvariable variable=BASE_IMAGE_SPECIFIC_RUN_ID]${{ parameters.base_image_specific_run_id }}"
+                  echo "##vso[task.setvariable variable=ROOTFS_LOCATION;isOutput=true]$(Pipeline.Workspace)"
+                  echo "##vso[task.setvariable variable=ARTIFACT_NAME;isOutput=true]BuildFinalRootFS-te0950-sw-debian-build-final-rootfs-1-1"
+                else
+                  echo "Released base image will be used (if required one...)"
+                  echo "##vso[task.setvariable variable=ROOTFS_LOCATION;isOutput=true]$(Build.SourcesDirectory)/artifactorydownload/releases/debian-base-image-te0950/latest"
+                fi
+              fi
+
+      - job: BuildCustomRootFsPackg
+        timeoutInMinutes: 0 
+        cancelTimeoutInMinutes: 35790 
+        container: a-core-application-container
+        dependsOn:
+          - InitStep
+        steps:
+          - bash: |
+              set -e
+              echo "$(ROOTFS_PATTERN)"
+
+          # - task: ArtifactoryGenericDownload@3
+          #   inputs:
+          #     connection: 'sc-ado-artifactory'
+          #     specSource: 'taskConfiguration'
+          #     fileSpec: |
+          #       {
+          #         "files": [
+          #           {
+          #             "pattern": "$(ROOTFS_PATTERN)",
+          #             "target": "$(Build.SourcesDirectory)/artifactorydownload/"
+          #           }
+          #         ]
+          #       }
+          #     failNoOp: true
+          #   condition: |
+          #     and(
+          #       or(
+          #         eq(${{ parameters.deploy_aos_runnable_in_base_image }}, 'true'),
+          #         eq(${{ parameters.deploy_mmic_libraries_in_base_image }}, 'true'),
+          #         eq(${{ parameters.deploy_fpga_bit_file_in_base_image }}, 'true')
+          #       ),
+          #       eq('${{ parameters.build_target }}', 'armv8'),
+          #       eq('${{ parameters.base_image_specific_run_id }}', 0),
+          #       eq(variables['build_completed'], 'True')
+          #     )
+          # displayName: Download rootfs file
+
+# trigger:
+# - main
+
+# variables:
+#   a_core_sw_variant: 'nightly'
+#   a_core_version_major: $[ format('{0:dd}', pipeline.startTime) ]  # Last two digits of the year
+#   a_core_version_minor: $[ format('{0:MM}', pipeline.startTime) ]  # Month
+#   a_core_version_patch: $[ format('{0:yyyy}', pipeline.startTime) ]  # Full year
+
+# jobs:
+# - job: Build
+#   displayName: 'Build and Test'
+#   pool:
+#     vmImage: 'ubuntu-latest'
+
+#   steps:
+#   - script: |
+#       echo "A-Core SW Variant: $(a_core_sw_variant)"
+#       echo "A-Core Major Version: $(a_core_version_major)"
+#       echo "A-Core Minor Version: $(a_core_version_minor)"
+#       echo "A-Core Patch Version: $(a_core_version_patch)"
+#     displayName: 'Print Version Information'
+#   - script: |
+#       # Your build commands here
+#       echo "Building with version: $(a_core_version_major).$(a_core_version_minor).$(a_core_version_patch)"
+#     displayName: 'Build Project'
