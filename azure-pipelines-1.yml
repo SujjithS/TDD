@@ -59,15 +59,15 @@ stages:
       - job: BuildCustomRootFsPackg
         timeoutInMinutes: 0 
         cancelTimeoutInMinutes: 35790 
-        dependsOn: 
-          - InitStep
+        dependsOn: InitStep
         variables:
           ROOTFS_PATTERN: $[ dependencies.InitStep.outputs['Set ROOTFS Variables.ROOTFS_PATTERN'] ]
         steps:
           - script: |
               set -e
-              echo "ROOTFS_PATTERN: $(ROOTFS_PATTERN)"
+              echo "ROOTFS_PATTERN: $ROOTFS_PATTERN"
             displayName: 'Echo ROOTFS_PATTERN'
+
 
 
           # - task: ArtifactoryGenericDownload@3
