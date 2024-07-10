@@ -22,8 +22,8 @@ stages:
                 echo "##vso[task.setvariable variable=ROOTFS_FILENAME;isOutput=true]rootfs_tec0204_bullseye_final_arm64_latest.ext4"
                 echo "##vso[task.setvariable variable=ROOTFS_PATTERN;isOutput=true]zugspitze-series-generic-local/releases/debian-base-image/latest/rootfs_tec0204_bullseye_final_arm64_latest.ext4.gz"
 
-                echo "ROOTFS file: $(ROOTFS_FILENAME)"
-                echo "ROOTFS_PATTERN: $(ROOTFS_PATTERN)"
+                echo "ROOTFS file: $ROOTFS_FILENAME"
+                echo "ROOTFS_PATTERN: $ROOTFS_PATTERN"
 
                 echo "Baseimage to be used:"
                 echo " - BASE_IMAGE_SPECIFIC_RUN_ID: ${{ parameters.base_image_specific_run_id }}"
@@ -40,8 +40,8 @@ stages:
                 echo "##vso[task.setvariable variable=ROOTFS_PATTERN;isOutput=true]zugspitze-series-generic-local/releases/debian-base-image-te0950/latest/rootfs_te0950_bullseye_final_arm64_latest.ext4.gz"
                 echo "##vso[task.setvariable variable=ROOTFS_FILENAME;isOutput=true]rootfs_te0950_bullseye_arm64_latest.ext4"
 
-                echo "ROOTFS file: $(ROOTFS_FILENAME)"
-                echo "ROOTFS_PATTERN: $(ROOTFS_PATTERN)"
+                echo "ROOTFS file: $ROOTFS_FILENAME"
+                echo "ROOTFS_PATTERN: $ROOTFS_PATTERN"
 
                 echo "Baseimage to be used:"
                 echo " - BASE_IMAGE_SPECIFIC_RUN_ID: ${{ parameters.base_image_specific_run_id }}"                
