@@ -1,70 +1,133 @@
-parameters:
-- name: base_image_target
-  displayName: Base image type (target)
-  type: string
-  default: te0950
-- name: base_image_specific_run_id
-  displayName: 'Base image specific run ID'
-  type: number
-  default: 0
+trigger:
+- main
 
-stages:
-  - stage: A_Core_Build
-    jobs:
-      - job: InitStep
-        timeoutInMinutes: 0 
-        cancelTimeoutInMinutes: 35790 
-        steps:
-          - script: |
-              set -e
+pool:
+  vmImage: 'ubuntu-latest'
 
-              if [[ "${{ parameters.base_image_target }}" == "tec0204" ]]; then
-                ROOTFS_FILENAME="rootfs_tec0204_bullseye_final_arm64_latest.ext4"
-                ROOTFS_PATTERN="zugspitze-series-generic-local/releases/debian-base-image/latest/rootfs_tec0204_bullseye_final_arm64_latest.ext4.gz"
-                if [[ "${{ parameters.base_image_specific_run_id }}" != 0 ]]; then
-                  ROOTFS_LOCATION="$(Pipeline.Workspace)"
-                  ARTIFACT_NAME="BuildFinalRootFS-tec0204-sw-debian-build-final-rootfs-1-1"
-                else
-                  ROOTFS_LOCATION="$(Build.SourcesDirectory)/artifactorydownload/releases/debian-base-image/latest"
-                fi
-              elif [[ "${{ parameters.base_image_target }}" == "te0950" ]]; then
-                ROOTFS_FILENAME="rootfs_te0950_bullseye_arm64_latest.ext4"
-                ROOTFS_PATTERN="zugspitze-series-generic-local/releases/debian-base-image-te0950/latest/rootfs_te0950_bullseye_final_arm64_latest.ext4.gz"
-                if [[ "${{ parameters.base_image_specific_run_id }}" != 0 ]]; then
-                  ROOTFS_LOCATION="$(Pipeline.Workspace)"
-                  ARTIFACT_NAME="BuildFinalRootFS-te0950-sw-debian-build-final-rootfs-1-1"
-                else
-                  ROOTFS_LOCATION="$(Build.SourcesDirectory)/artifactorydownload/releases/debian-base-image-te0950/latest"
-                fi
-              fi
+variables:
+  sasUrl: 'https://swtestir2st.file.core.windows.net/swtest/recording_peaks.zip?sp=r&st=2024-07-12T08:34:47Z&se=2025-01-13T08:34:00Z&spr=https&sv=2022-11-02&sig=I4deBVp%2FUC1qRIjNrJodiWRRxcdMThhLVM9pnsZPLo0%3D&sr=f'
+  localFilePath: '$(Pipeline.Workspace)/recording_peaks.zip'
 
-              echo "##vso[task.setvariable variable=ROOTFS_FILENAME]$ROOTFS_FILENAME"
-              echo "##vso[task.setvariable variable=ROOTFS_PATTERN]$ROOTFS_PATTERN"
-              echo "##vso[task.setvariable variable=ROOTFS_LOCATION]$ROOTFS_LOCATION"
-              echo "##vso[task.setvariable variable=BASE_IMAGE_SPECIFIC_RUN_ID]${{ parameters.base_image_specific_run_id }}"
-              echo "##vso[task.setvariable variable=ARTIFACT_NAME]$ARTIFACT_NAME"
+steps:
+- script: |
+    echo "Checking if the file exists..."
 
-              echo "ROOTFS file: $ROOTFS_FILENAME"
-              echo "ROOTFS_PATTERN: $ROOTFS_PATTERN"
-              echo "ROOTFS_LOCATION: $ROOTFS_LOCATION"
-              echo "Baseimage to be used:"
-              echo " - BASE_IMAGE_SPECIFIC_RUN_ID: $BASE_IMAGE_SPECIFIC_RUN_ID"
-              if [[ "$BASE_IMAGE_SPECIFIC_RUN_ID" != 0 ]]; then
-                echo "It was requested to use a specific base image (not the released one...)"
-              else
-                echo "Released base image will be used (if required one...)"
-              fi
-            displayName: 'Set ROOTFS Variables'
+    # Check if the file exists using curl
+    http_status=$(curl -o /dev/null -s -w "%{http_code}\n" "$(sasUrl)")
 
-      - job: BuildCustomRootFsPackg
-        dependsOn: InitStep
-        timeoutInMinutes: 0 
-        cancelTimeoutInMinutes: 35790 
-        steps:
-          - script: |
-              set -e
-              echo "ROOTFS_PATTERN: $(ROOTFS_PATTERN)"
-            displayName: 'Echo ROOTFS_PATTERN'
+    if [ "$http_status" -eq 200 ]; then
+      echo "File exists. Downloading the file..."
+      curl -o $(localFilePath) "$(sasUrl)"
+      echo "File downloaded to: $(localFilePath)"
+    else
+      echo "File does not exist or cannot be accessed. HTTP status code: $http_status"
+      exit 1
+    fi
+  displayName: 'Check and download file using curl'
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# parameters:
+# - name: base_image_target
+#   displayName: Base image type (target)
+#   type: string
+#   default: te0950
+# - name: base_image_specific_run_id
+#   displayName: 'Base image specific run ID'
+#   type: number
+#   default: 0
+
+# stages:
+#   - stage: A_Core_Build
+#     jobs:
+#       - job: InitStep
+#         timeoutInMinutes: 0 
+#         cancelTimeoutInMinutes: 35790 
+#         steps:
+#           - script: |
+#               set -e
+
+#               if [[ "${{ parameters.base_image_target }}" == "tec0204" ]]; then
+#                 ROOTFS_FILENAME="rootfs_tec0204_bullseye_final_arm64_latest.ext4"
+#                 ROOTFS_PATTERN="zugspitze-series-generic-local/releases/debian-base-image/latest/rootfs_tec0204_bullseye_final_arm64_latest.ext4.gz"
+#                 if [[ "${{ parameters.base_image_specific_run_id }}" != 0 ]]; then
+#                   ROOTFS_LOCATION="$(Pipeline.Workspace)"
+#                   ARTIFACT_NAME="BuildFinalRootFS-tec0204-sw-debian-build-final-rootfs-1-1"
+#                 else
+#                   ROOTFS_LOCATION="$(Build.SourcesDirectory)/artifactorydownload/releases/debian-base-image/latest"
+#                 fi
+#               elif [[ "${{ parameters.base_image_target }}" == "te0950" ]]; then
+#                 ROOTFS_FILENAME="rootfs_te0950_bullseye_arm64_latest.ext4"
+#                 ROOTFS_PATTERN="zugspitze-series-generic-local/releases/debian-base-image-te0950/latest/rootfs_te0950_bullseye_final_arm64_latest.ext4.gz"
+#                 if [[ "${{ parameters.base_image_specific_run_id }}" != 0 ]]; then
+#                   ROOTFS_LOCATION="$(Pipeline.Workspace)"
+#                   ARTIFACT_NAME="BuildFinalRootFS-te0950-sw-debian-build-final-rootfs-1-1"
+#                 else
+#                   ROOTFS_LOCATION="$(Build.SourcesDirectory)/artifactorydownload/releases/debian-base-image-te0950/latest"
+#                 fi
+#               fi
+
+#               echo "##vso[task.setvariable variable=ROOTFS_FILENAME]$ROOTFS_FILENAME"
+#               echo "##vso[task.setvariable variable=ROOTFS_PATTERN]$ROOTFS_PATTERN"
+#               echo "##vso[task.setvariable variable=ROOTFS_LOCATION]$ROOTFS_LOCATION"
+#               echo "##vso[task.setvariable variable=BASE_IMAGE_SPECIFIC_RUN_ID]${{ parameters.base_image_specific_run_id }}"
+#               echo "##vso[task.setvariable variable=ARTIFACT_NAME]$ARTIFACT_NAME"
+
+#               echo "ROOTFS file: $ROOTFS_FILENAME"
+#               echo "ROOTFS_PATTERN: $ROOTFS_PATTERN"
+#               echo "ROOTFS_LOCATION: $ROOTFS_LOCATION"
+#               echo "Baseimage to be used:"
+#               echo " - BASE_IMAGE_SPECIFIC_RUN_ID: $BASE_IMAGE_SPECIFIC_RUN_ID"
+#               if [[ "$BASE_IMAGE_SPECIFIC_RUN_ID" != 0 ]]; then
+#                 echo "It was requested to use a specific base image (not the released one...)"
+#               else
+#                 echo "Released base image will be used (if required one...)"
+#               fi
+#             displayName: 'Set ROOTFS Variables'
+
+#       - job: BuildCustomRootFsPackg
+#         dependsOn: InitStep
+#         timeoutInMinutes: 0 
+#         cancelTimeoutInMinutes: 35790 
+#         steps:
+#           - script: |
+#               set -e
+#               echo "ROOTFS_PATTERN: $(ROOTFS_PATTERN)"
+#             displayName: 'Echo ROOTFS_PATTERN'
 
 
           # - task: ArtifactoryGenericDownload@3
