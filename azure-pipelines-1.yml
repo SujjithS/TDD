@@ -1,39 +1,60 @@
-parameters:
-- name: package_type
-  displayName: Package type
-  default: deb
-  values:
-  - conan
-  - deb
-  # Note: Conan is only for te0950_neutrino.
-
-
 trigger:
-- main
+- main  # Runs the pipeline when changes are pushed to the main branch
 
-pool:
-  vmImage: 'ubuntu-latest'
+stages:
+- stage: Deploy
+  displayName: "Deploy to Test Environment"
+  jobs:
+  - deployment: DeployTest
+    displayName: "Deploy to Test"
+    environment: test  # This references the Azure DevOps Environment
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - script: echo "Deploying to the test environment..."
+          - script: echo "Deployment successful!"
 
-variables:
-  sasUrl: 'https://swtestir2st.file.core.windows.net/swtest/recording_peaks.zip?sp=r&st=2024-07-12T08:34:47Z&se=2025-01-13T08:34:00Z&spr=https&sv=2022-11-02&sig=I4deBVp%2FUC1qRIjNrJodiWRRxcdMThhLVM9pnsZPLo0%3D&sr=f'
-  localFilePath: '$(Pipeline.Workspace)/recording_peaks.zip'
 
-steps:
-- script: |
-    echo "Checking if the file exists..."
 
-    # Check if the file exists using curl
-    http_status=$(curl -o /dev/null -s -w "%{http_code}\n" "$(sasUrl)")
 
-    if [ "$http_status" -eq 200 ]; then
-      echo "File exists. Downloading the file..."
-      curl -o $(localFilePath) "$(sasUrl)"
-      echo "File downloaded to: $(localFilePath)"
-    else
-      echo "File does not exist or cannot be accessed. HTTP status code: $http_status"
-      exit 1
-    fi
-  displayName: 'Check and download file using curl'
+# ---------------------------------------------------------------------------------------------------------------------------------------------------
+# parameters:
+# - name: package_type
+#   displayName: Package type
+#   default: deb
+#   values:
+#   - conan
+#   - deb
+#   # Note: Conan is only for te0950_neutrino.
+
+
+# trigger:
+# - main
+
+# pool:
+#   vmImage: 'ubuntu-latest'
+
+# variables:
+#   sasUrl: 'https://swtestir2st.file.core.windows.net/swtest/recording_peaks.zip?sp=r&st=2024-07-12T08:34:47Z&se=2025-01-13T08:34:00Z&spr=https&sv=2022-11-02&sig=I4deBVp%2FUC1qRIjNrJodiWRRxcdMThhLVM9pnsZPLo0%3D&sr=f'
+#   localFilePath: '$(Pipeline.Workspace)/recording_peaks.zip'
+
+# steps:
+# - script: |
+#     echo "Checking if the file exists..."
+
+#     # Check if the file exists using curl
+#     http_status=$(curl -o /dev/null -s -w "%{http_code}\n" "$(sasUrl)")
+
+#     if [ "$http_status" -eq 200 ]; then
+#       echo "File exists. Downloading the file..."
+#       curl -o $(localFilePath) "$(sasUrl)"
+#       echo "File downloaded to: $(localFilePath)"
+#     else
+#       echo "File does not exist or cannot be accessed. HTTP status code: $http_status"
+#       exit 1
+#     fi
+#   displayName: 'Check and download file using curl'
 
 
 
